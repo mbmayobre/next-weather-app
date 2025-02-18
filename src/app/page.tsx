@@ -5,7 +5,7 @@ import Weather from "./components/weather";
 export default function Home() {
   return (
     <main className="flex flex-col items-center justify-center min-h-screen p-4">
-      <h1 className="text-3xl font-bold mb-4">Weather App</h1>
+      {/* <h1 className="text-3xl font-bold mb-4">Weather App</h1> */}
       <Weather />
     </main>
   );
