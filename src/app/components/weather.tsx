@@ -3,10 +3,11 @@
 import { useEffect, useState } from "react";
 
 export default function Weather() {
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState<string>("");
   const [weather, setWeather] = useState<any>(null);
   const [latitude, setLatitude] = useState<string>("");
   const [longitude, setLongitude] = useState<string>("");
+  const [location, setLocation] = useState<any>();
   const [loading, setLoading] = useState(false);
 
   const fetchWeather = async () => {
@@ -25,17 +26,29 @@ export default function Weather() {
     if (!city) return;
     setLoading(true);
     const res = await fetch(
-      `http://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=5&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+      `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/direct?q=${city}&limit=5&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
     );
     const data = await res.json();
     setLatitude(data[0].lat);
     setLongitude(data[0].lon);
     setLoading(false);
-  }
+  };
+
+  const fetchLocationName = async () => {
+    if (!latitude || !longitude) return;
+    setLoading(true);
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/reverse?lat=${latitude}&lon=${longitude}&limit=5&&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+    );
+    const data = await res.json();
+    setLocation(data[0]);
+    setLoading(false);
+  };
 
   useEffect(() => {
     if (!!latitude && !!longitude) {
       fetchWeather();
+      fetchLocationName();
     }
   }, [latitude, longitude]);
 
@@ -54,9 +67,9 @@ export default function Weather() {
 
       {weather && (
         <div className="bg-gray-100 p-4 rounded-md text-black">
-          {/* <h2 className="text-xl font-semibold">{weather.name}</h2>
-          <p className="text-lg">{weather.weather[0].description}</p>
-          <p className="text-2xl">{weather.main.temp}°F</p> */}
+          <h2 className="text-xl font-semibold">{location.name}, {location.country}</h2>
+          <p className="text-lg">{weather.current.weather[0].description}</p>
+          <p className="text-2xl">{weather.current.temp}°F</p>
         </div>
       )}
     </div>
