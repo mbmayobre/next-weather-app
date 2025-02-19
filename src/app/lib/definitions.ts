@@ -100,11 +100,11 @@ export type weather_alert = {
   start: number;
   end: number;
   description: string;
-  tags: any[];
+  tags: string[];
 };
 
 export type weather = {
-  current: any;
+  current: current_weather;
   daily: daily_weather[];
   hourly: hourly_weather[];
   lat: number;
