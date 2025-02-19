@@ -1,14 +1,15 @@
 'use client'
 
 import { useEffect, useState } from "react";
+import { weather, location } from "../lib/definitions";
 
 export default function Weather() {
   const [city, setCity] = useState<string>("");
-  const [weather, setWeather] = useState<any>(null);
+  const [weather, setWeather] = useState<weather>();
   const [latitude, setLatitude] = useState<string>("");
   const [longitude, setLongitude] = useState<string>("");
-  const [location, setLocation] = useState<any>();
-  const [loading, setLoading] = useState(false);
+  const [location, setLocation] = useState<location>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const fetchWeather = async () => {
     if (!latitude || !longitude) return;
@@ -67,7 +68,7 @@ export default function Weather() {
 
       {weather && (
         <div className="bg-gray-100 p-4 rounded-md text-black">
-          <h2 className="text-xl font-semibold">{location.name}, {location.country}</h2>
+          <h2 className="text-xl font-semibold">{location?.name}, {location?.country}</h2>
           <p className="text-lg">{weather.current.weather[0].description}</p>
           <p className="text-2xl">{weather.current.temp}°F</p>
         </div>
