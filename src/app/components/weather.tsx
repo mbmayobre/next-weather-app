@@ -28,7 +28,10 @@ export default function Weather() {
     setLoading(true);
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/direct?q=${city}&limit=5&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+        !isNaN(Number(city)) ? 
+        `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/zip?zip=${city},US&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+        :
+        `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/direct?q=${city}&limit=1&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
       );
       if (!res.ok) {
         throw new Error("Failed to fetch location");
@@ -37,8 +40,13 @@ export default function Weather() {
       if (data.length === 0) {
         throw new Error("No location found");
       }
-      setLatitude(data[0].lat);
-      setLongitude(data[0].lon);
+      if (Array.isArray(data)) {
+        setLatitude(data[0].lat);
+        setLongitude(data[0].lon);
+      } else {
+      setLatitude(data.lat);
+      setLongitude(data.lon);
+      }
     } catch (error) {
       console.error(error);
       if (error instanceof Error) {
