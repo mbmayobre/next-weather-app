@@ -108,15 +108,17 @@ export default function Weather() {
   }, [latitude, longitude]);
 
   return (
-    <div className="flex flex-col items-center space-y-4 p-4">
+    <div className="relative w-full flex justify-center p-4">
       {/* Search Bar */}
-      <SearchBar onSearch={fetchLocation} loading={loading} />
+      <div className="absolute top-0 w-1/2 mx-auto flex justify-center p-4">
+        <SearchBar onSearch={fetchLocation} loading={loading} />
+      </div>
 
       {/* Error Message */}
       {error && <p className="text-red-500">{error}</p>}
 
       {weather && !error && (
-      <div className="bg-gray-100 p-4 rounded-md text-black">
+      <div className="bg-gray-100 mt-20 w-3/4 p-4 rounded-md text-black">
         <h2 className="text-xl font-semibold">{location?.name}, {location?.country}</h2>
         <p className="text-lg">{weather.current.weather[0].description}</p>
         <p className="text-2xl">{weather.current.temp}°F</p>
