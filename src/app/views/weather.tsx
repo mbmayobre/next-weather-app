@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import { weather, location } from "../lib/definitions";
-import SearchBar from "./searchbar";
+import SearchBar from "../components/searchbar";
 
 export default function Weather() {
   const [weather, setWeather] = useState<weather>();
