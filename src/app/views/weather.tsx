@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from "react";
 import { weather, location } from "../lib/definitions";
 import SearchBar from "../components/searchbar";
+import CurrentWeather from "../components/current-weather";
 
 export default function Weather() {
   const [weather, setWeather] = useState<weather>();
@@ -61,8 +62,8 @@ export default function Weather() {
         setLatitude(data[0].lat);
         setLongitude(data[0].lon);
       } else {
-      setLatitude(data.lat);
-      setLongitude(data.lon);
+        setLatitude(data.lat);
+        setLongitude(data.lon);
       }
     } catch (error) {
       console.error(error);
@@ -117,14 +118,8 @@ export default function Weather() {
       {/* Error Message */}
       {error && <p className="text-red-500">{error}</p>}
 
-      {weather && !error && (
-      <div className="bg-gray-100 mt-20 w-3/4 p-4 rounded-md text-black">
-        <h2 className="text-xl font-semibold">{location?.name}, {location?.country}</h2>
-        <p className="text-lg">{weather.current.weather[0].description}</p>
-        <p className="text-2xl">{weather.current.temp}°F</p>
-        <p>Feels like: {weather.current.feels_like}°F</p>
-        <p>High: {weather.daily[0].temp.max}°F - Low: {weather.daily[0].temp.min}°F</p>
-      </div>
+      {weather && location && !error && (
+        <CurrentWeather weather={weather} location={location} />
       )}
     </div>
   );
