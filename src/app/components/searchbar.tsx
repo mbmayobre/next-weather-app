@@ -49,7 +49,7 @@ export const SearchBar: FunctionComponent<SearchBarProps> = ({ onSearch, loading
         {/* Search Button */}
         <button
           type="submit"
-          className="ml-2 w-[90px] rounded-md bg-slate-800 py-2 px-4 border border-transparent text-center text-sm text-white transition-all shadow-md hover:shadow-lg focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none"
+          className="ml-2 w-[90px] rounded-md bg-gray-200 dark:bg-slate-800 border border-black dark:border-opacity-0 text-black dark:text-white py-2 px-4 text-center text-sm transition-all shadow-md hover:shadow-lg hover:text-white focus:bg-slate-700 focus:shadow-none active:bg-slate-700 hover:bg-slate-800 dark:hover:bg-gray-200 dark:hover:text-black active:shadow-none disabled:pointer-events-none disabled:opacity-80 disabled:shadow-none"
           disabled={loading}
         >
           {loading ? "Loading..." : "Search"}
