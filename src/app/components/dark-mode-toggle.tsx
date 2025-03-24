@@ -3,9 +3,7 @@
 import { FunctionComponent, useEffect, useState } from "react";
 import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
 
-interface DarkModeToggleProps {};
-
-export const DarkModeToggle: FunctionComponent<DarkModeToggleProps> = () => {
+export const DarkModeToggle: FunctionComponent = () => {
   // Initialize state; default to false.
   const [isDarkMode, setIsDarkMode] = useState(false);
 
