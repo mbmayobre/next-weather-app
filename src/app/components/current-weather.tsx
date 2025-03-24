@@ -1,5 +1,6 @@
 'use client'
 
+import { FunctionComponent } from "react";
 import { weather, location } from "../lib/definitions";
 
 interface CurrentWeatherProps {
@@ -7,7 +8,7 @@ interface CurrentWeatherProps {
   location: location;
 }
 
-export default function CurrentWeather({ weather, location }: CurrentWeatherProps) {
+export const CurrentWeather: FunctionComponent<CurrentWeatherProps> = ({ weather, location }) => {
 
   return (
     <div className="flex flex-row justify-between bg-gray-400 mt-20 w-full sm:w-3/4 p-4 rounded-md text-black">
@@ -28,3 +29,5 @@ export default function CurrentWeather({ weather, location }: CurrentWeatherProp
     </div>
   );
 };
+
+export default CurrentWeather;

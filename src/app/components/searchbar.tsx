@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from "react";
+import { FunctionComponent, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
 
@@ -9,7 +9,7 @@ interface SearchBarProps {
   loading: boolean;
 }
 
-export default function SearchBar({ onSearch, loading }: SearchBarProps) {
+export const SearchBar: FunctionComponent<SearchBarProps> = ({ onSearch, loading }) => {
   const [city, setCity] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
@@ -58,3 +58,5 @@ export default function SearchBar({ onSearch, loading }: SearchBarProps) {
     </form>
   );
 }
+
+export default SearchBar;

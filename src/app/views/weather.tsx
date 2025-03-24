@@ -1,11 +1,11 @@
 'use client'
 
-import { useEffect, useState, useCallback } from "react";
+import { FunctionComponent, useEffect, useState, useCallback } from "react";
 import { weather, location } from "../lib/definitions";
 import SearchBar from "../components/searchbar";
 import CurrentWeather from "../components/current-weather";
 
-export default function Weather() {
+export const Weather: FunctionComponent = () => {
   const [weather, setWeather] = useState<weather>();
   const [latitude, setLatitude] = useState<string>("");
   const [longitude, setLongitude] = useState<string>("");
@@ -123,4 +123,6 @@ export default function Weather() {
       )}
     </div>
   );
-}
+};
+
+export default Weather;
