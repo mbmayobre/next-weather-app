@@ -28,7 +28,7 @@ export default function SearchBar({ onSearch, loading }: SearchBarProps) {
         <div className="relative w-full">
           {/* Search Input */}
           <input
-            className="w-full bg-transparent placeholder:text-slate-400 text-slate-700 text-sm border border-slate-200 rounded-md pl-10 pr-10 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 hover:border-slate-300 shadow-sm focus:shadow"
+            className="w-full bg-transparent text-slate-400 text-sm border border-slate-400 rounded-md pl-10 pr-10 py-2 transition duration-300 ease focus:outline-none focus:border-slate-100 focus:placeholder:invisible hover:border-slate-300 shadow-sm focus:shadow"
             placeholder="Enter city name or zip code..."
             value={city}
             onChange={(e) => setCity(e.target.value)}
