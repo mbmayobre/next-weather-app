@@ -4,6 +4,7 @@ import { FunctionComponent, useEffect, useState, useCallback } from "react";
 import { weather, location } from "../lib/definitions";
 import SearchBar from "../components/searchbar";
 import CurrentWeather from "../components/current-weather";
+import DarkModeToggle from "../components/dark-mode-toggle";
 
 export const Weather: FunctionComponent = () => {
   const [weather, setWeather] = useState<weather>();
@@ -113,6 +114,7 @@ export const Weather: FunctionComponent = () => {
       {/* Search Bar */}
       <div className="absolute top-0 w-1/2 mx-auto flex justify-center p-4">
         <SearchBar onSearch={fetchLocation} loading={loading} />
+        <DarkModeToggle />
       </div>
 
       {/* Error Message */}
