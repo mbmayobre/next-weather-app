@@ -10,12 +10,21 @@ interface CurrentWeatherProps {
 export default function CurrentWeather({ weather, location }: CurrentWeatherProps) {
 
   return (
-    <div className="bg-gray-100 mt-20 w-full sm:w-3/4 p-4 rounded-md text-black">
-      <h2 className="text-xl font-semibold">{location?.name}, {location?.country}</h2>
-      <p className="text-lg">{weather.current.weather[0].description}</p>
-      <p className="text-2xl">{weather.current.temp}°F</p>
-      <p>Feels like: {weather.current.feels_like}°F</p>
-      <p>High: {weather.daily[0].temp.max}°F - Low: {weather.daily[0].temp.min}°F</p>
+    <div className="flex flex-row justify-between bg-gray-400 mt-20 w-full sm:w-3/4 p-4 rounded-md text-black">
+      <div>
+        <h2 className="text-xl font-semibold mb-5">{location?.name}, {location?.country}</h2>
+        <p className="text-6xl mb-5">{weather.current.temp}°F</p>
+        <p className="text-lg">{weather.current.weather[0].description}</p>
+        <p>Feels like: {weather.current.feels_like}°F</p>
+        <p>High: {weather.daily[0].temp.max}°F - Low: {weather.daily[0].temp.min}°F</p>
+      </div>
+      <div className="flex items-center">
+        <img
+        className="w-40 h-40"
+          src={`https://openweathermap.org/img/wn/${weather.current.weather[0].icon}@2x.png`}
+          alt="Weather Icon"
+        />
+      </div>
     </div>
   );
 };
