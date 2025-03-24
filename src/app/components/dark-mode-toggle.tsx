@@ -36,7 +36,7 @@ export const DarkModeToggle: FunctionComponent<DarkModeToggleProps> = () => {
   return (
     <button
       onClick={() => setIsDarkMode(!isDarkMode)}
-      className="px-4 py-2 ms-2 rounded-md bg-gray-200 dark:bg-gray-800 text-black dark:text-white transition-colors"
+      className="px-4 py-2 ms-2 rounded-md bg-gray-200 dark:bg-green-500 text-black dark:text-white transition-colors"
       aria-label="Toggle dark mode"
     >
       {isDarkMode ? <MdDarkMode /> : <MdOutlineDarkMode />}
