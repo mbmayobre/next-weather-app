@@ -34,7 +34,7 @@ export const DarkModeToggle: FunctionComponent = () => {
   return (
     <button
       onClick={() => setIsDarkMode(!isDarkMode)}
-      className="px-4 py-2 ms-2 rounded-md bg-gray-200 dark:bg-slate-800 border border-black dark:border-opacity-0 text-black dark:text-white transition-colors hover:shadow-lg hover:text-white hover:bg-slate-800 dark:hover:bg-gray-200 dark:hover:text-black"
+      className="px-4 py-2 ms-2 rounded-md bg-gray-200 dark:bg-slate-800 border border-black dark:border-opacity-0 text-black dark:text-white transition-colors"
       aria-label="Toggle dark mode"
     >
       {isDarkMode ? <MdOutlineDarkMode /> : <MdDarkMode />}
