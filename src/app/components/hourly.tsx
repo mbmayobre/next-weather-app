@@ -29,7 +29,7 @@ export const HourlyWeather: FunctionComponent<HourlyProps> = ({ weather }) => {
         <p className="ml-3 font-semibold">Hourly Forecast</p>
       </div>
       <div className="flex flex-row overflow-x-scroll pb-2">
-        {weather.hourly.map((hour, index) => (
+        {weather.hourly.slice(0, 25).map((hour, index) => (
           <div key={index} className="flex flex-col justify-center mx-3 w-auto">
             <p className="flex justify-center w-full">{Math.round(hour.temp)}°</p>
             <img
