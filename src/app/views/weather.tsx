@@ -5,6 +5,7 @@ import { weather, location } from "../lib/definitions";
 import SearchBar from "../components/searchbar";
 import CurrentWeather from "../components/current-weather";
 import DarkModeToggle from "../components/dark-mode-toggle";
+import HourlyWeather from "../components/hourly";
 
 export const Weather: FunctionComponent = () => {
   const [weather, setWeather] = useState<weather>();
@@ -122,7 +123,10 @@ export const Weather: FunctionComponent = () => {
       {error && <p className="text-red-500">{error}</p>}
 
       {weather && location && !error && (
-        <CurrentWeather weather={weather} location={location} />
+        <div className="flex flex-wrap justify-center w-full">
+          <CurrentWeather weather={weather} location={location} />
+          <HourlyWeather weather={weather} />
+        </div>
       )}
     </div>
   );

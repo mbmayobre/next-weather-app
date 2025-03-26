@@ -21,7 +21,7 @@ export const CurrentWeather: FunctionComponent<CurrentWeatherProps> = ({ weather
       </div>
       <div className="flex items-center">
         <img
-        className="w-40 h-40"
+          className="w-40 h-40"
           src={`https://openweathermap.org/img/wn/${weather.current.weather[0].icon}@2x.png`}
           alt="Weather Icon"
         />
