@@ -28,6 +28,7 @@ export const Weather: FunctionComponent = () => {
 
       const data = await res.json();
       setWeather(data);
+      console.log(data);
     } catch (error) {
       console.error(error);
       setError("Unable to fetch weather data");

@@ -28,7 +28,7 @@ export const SearchBar: FunctionComponent<SearchBarProps> = ({ onSearch, loading
         <div className="relative w-full">
           {/* Search Input */}
           <input
-            className="w-full bg-transparent text-slate-400 text-sm border border-black rounded-md pl-10 pr-10 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 focus:placeholder:invisible hover:border-slate-500 shadow-sm focus:shadow"
+            className="w-full bg-transparent text-slate-800 dark:text-slate-300 text-sm border border-black dark:border-white placeholder-gray-500 rounded-md pl-10 pr-10 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 focus:placeholder:invisible hover:border-slate-500 shadow-sm focus:shadow"
             placeholder="Enter city name or zip code..."
             value={city}
             onChange={(e) => setCity(e.target.value)}
@@ -49,7 +49,7 @@ export const SearchBar: FunctionComponent<SearchBarProps> = ({ onSearch, loading
         {/* Search Button */}
         <button
           type="submit"
-          className="ml-2 w-[90px] rounded-md bg-gray-200 dark:bg-slate-800 border border-black dark:border-opacity-0 text-black dark:text-white py-2 px-4 text-center text-sm transition-all shadow-md focus:bg-slate-700 focus:shadow-none active:bg-slate-700 active:shadow-none disabled:pointer-events-none disabled:opacity-80 disabled:shadow-none"
+          className="ml-2 w-[90px] rounded-md bg-gray-200 dark:bg-slate-800 border border-black dark:border-opacity-0 text-black dark:text-white py-2 px-4 text-center text-sm transition-all shadow-md focus:bg-slate-700 focus:shadow-none disabled:pointer-events-none disabled:opacity-80 disabled:shadow-none"
           disabled={loading}
         >
           {loading ? "Loading..." : "Search"}
