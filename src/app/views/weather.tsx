@@ -6,6 +6,7 @@ import SearchBar from "../components/searchbar";
 import CurrentWeather from "../components/current-weather";
 import DarkModeToggle from "../components/dark-mode-toggle";
 import HourlyWeather from "../components/hourly";
+import DailyWeather from "../components/daily";
 
 export const Weather: FunctionComponent = () => {
   const [weather, setWeather] = useState<weather>();
@@ -126,6 +127,7 @@ export const Weather: FunctionComponent = () => {
         <div className="flex flex-wrap justify-center w-full">
           <CurrentWeather weather={weather} location={location} />
           <HourlyWeather weather={weather} />
+          <DailyWeather weather={weather} />
         </div>
       )}
     </div>
