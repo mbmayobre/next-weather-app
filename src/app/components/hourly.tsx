@@ -23,21 +23,21 @@ export const HourlyWeather: FunctionComponent<HourlyProps> = ({ weather }) => {
   
 
   return (
-    <div className="flex flex-wrap bg-gray-400 mt-4 w-full sm:w-3/4 p-4 rounded-2xl text-black">
+    <div className="flex flex-wrap bg-gray-400 mt-4 w-full sm:w-3/4 h-[210px] p-4 rounded-2xl text-black">
       <div className="flex flex-row items-center ml-3 mb-4">
         <TbClockHour4 size={25} className="font-bold" />
         <p className="ml-3 font-semibold">Hourly Forecast</p>
       </div>
       <div className="flex flex-row overflow-x-scroll pb-2">
         {weather.hourly.slice(0, 25).map((hour, index) => (
-          <div key={index} className="flex flex-col justify-center mx-3 max-w-min h-full">
+          <div key={index} className="flex flex-col justify-center px-3 min-w-max h-full">
             <p className="flex justify-center w-full">{Math.round(hour.temp)}°</p>
             <img
-              className="flex w-full h-full object-cover my-2"
+              className="flex w-[40px] h-[40px] object-cover my-auto"
               src={`https://openweathermap.org/img/wn/${hour.weather[0].icon}.png`}
               alt="Hourly Weather Icon"
             />
-            <p className="text-center text-xs text-gray-600">{hour.pop > 0 ? `${Math.round(hour.pop * 100)}%` : null}</p>
+            <p className="text-center text-xs text-gray-600 mb-1">{hour.pop > 0 ? `${Math.round(hour.pop * 100)}%` : null}</p>
             <p className="text-xs">{formatHour(hour.dt)}</p>
           </div>
         ))}
