@@ -28,7 +28,7 @@ export const HourlyWeather: FunctionComponent<HourlyProps> = ({ weather }) => {
         <TbClockHour4 size={25} className="font-bold" />
         <p className="ml-3 font-semibold">Hourly Forecast</p>
       </div>
-      <div className="flex flex-row overflow-x-scroll pb-2">
+      <div className="flex flex-row overflow-x-scroll p-4">
         {weather.hourly.slice(0, 25).map((hour, index) => (
           <div key={index} className="flex flex-col justify-center px-3 min-w-max h-full">
             <p className="flex justify-center w-full">{Math.round(hour.temp)}°</p>
