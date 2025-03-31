@@ -28,7 +28,7 @@ export const DailyWeather: FunctionComponent<DailyWeatherProps> = ({ weather }) 
   }
 
   return (
-    <div className="flex flex-col flex-wrap bg-gray-400 w-full rounded-2xl text-black mt-4 p-4">
+    <div className="flex flex-col flex-wrap bg-gray-400 text-black dark:bg-black dark:text-white w-full rounded-2xl mt-4 p-4">
       <div className="flex flex-row items-center ml-3 mb-4">
         <MdOutlineCalendarToday size={25} className="font-bold" />
         <p className="ml-3 font-semibold">8-day Forecast</p>
@@ -36,7 +36,7 @@ export const DailyWeather: FunctionComponent<DailyWeatherProps> = ({ weather }) 
       <div className="flex flex-wrap overflow-x-auto w-full p-4">
         <div className="flex flex-row mx-auto pb-2">
           {weather.daily.map((day, index) => (
-            <div key={index} className="flex flex-col mx-1 pt-2 pb-2 sm:pb-5 px-3 bg-gray-200 rounded-full h-full max-w-min" >
+            <div key={index} className="flex flex-col mx-1 pt-2 pb-2 sm:pb-5 px-3 bg-gray-200 dark:bg-gray-800 rounded-full h-full max-w-min" >
               <p className="text-center">{Math.round(day.temp.max)}°</p>
               <p className="text-center">{Math.round(day.temp.min)}°</p>
               <img

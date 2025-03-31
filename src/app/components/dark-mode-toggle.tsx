@@ -1,7 +1,8 @@
 'use client'
 
 import { FunctionComponent, useEffect, useState } from "react";
-import { MdDarkMode, MdOutlineDarkMode } from "react-icons/md";
+import { MdDarkMode } from "react-icons/md";
+import { FiSun } from "react-icons/fi";
 
 export const DarkModeToggle: FunctionComponent = () => {
   // Initialize state; default to false.
@@ -17,7 +18,7 @@ export const DarkModeToggle: FunctionComponent = () => {
     if (storedPreference === 'true') {
       setIsDarkMode(true);
     } else {
-      setIsDarkMode(prefersDark);
+      setIsDarkMode(false);
     }
   }, []);
 
@@ -37,7 +38,7 @@ export const DarkModeToggle: FunctionComponent = () => {
       className="px-4 py-2 ms-2 rounded-md bg-gray-200 dark:bg-slate-800 border border-black dark:border-opacity-0 text-black dark:text-white transition-colors shadow-md"
       aria-label="Toggle dark mode"
     >
-      {isDarkMode ? <MdOutlineDarkMode /> : <MdDarkMode />}
+      {isDarkMode ? <FiSun /> : <MdDarkMode />}
     </button>
   );
 };
