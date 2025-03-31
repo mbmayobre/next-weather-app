@@ -113,7 +113,7 @@ export const Weather: FunctionComponent = () => {
   }, [latitude, longitude]);
 
   return (
-    <div className="relative w-full flex justify-center p-4">
+    <div className="relative w-full sm:w-3/4 flex justify-center p-4">
       {/* Search Bar */}
       <div className="absolute top-0 w-1/2 mx-auto flex justify-center p-4">
         <SearchBar onSearch={fetchLocation} loading={loading} />

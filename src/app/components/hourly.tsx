@@ -23,7 +23,7 @@ export const HourlyWeather: FunctionComponent<HourlyProps> = ({ weather }) => {
   
 
   return (
-    <div className="flex flex-wrap bg-gray-400 mt-4 w-full sm:w-3/4 h-[210px] p-4 rounded-2xl text-black">
+    <div className="flex flex-wrap bg-gray-400 mt-4 h-[210px] w-full p-4 rounded-2xl text-black">
       <div className="flex flex-row items-center ml-3 mb-4">
         <TbClockHour4 size={25} className="font-bold" />
         <p className="ml-3 font-semibold">Hourly Forecast</p>
@@ -38,7 +38,7 @@ export const HourlyWeather: FunctionComponent<HourlyProps> = ({ weather }) => {
               alt="Hourly Weather Icon"
             />
             <p className="text-center text-xs text-gray-600 mb-1">{hour.pop > 0 ? `${Math.round(hour.pop * 100)}%` : null}</p>
-            <p className="text-xs">{formatHour(hour.dt)}</p>
+            <p className="text-center text-xs">{formatHour(hour.dt)}</p>
           </div>
         ))}
       </div>

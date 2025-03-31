@@ -28,7 +28,7 @@ export const DailyWeather: FunctionComponent<DailyWeatherProps> = ({ weather }) 
   }
 
   return (
-    <div className="flex flex-col flex-wrap bg-gray-400 w-full sm:w-3/4 rounded-2xl text-black mt-4 p-4">
+    <div className="flex flex-col flex-wrap bg-gray-400 w-full rounded-2xl text-black mt-4 p-4">
       <div className="flex flex-row items-center ml-3 mb-4">
         <MdOutlineCalendarToday size={25} className="font-bold" />
         <p className="ml-3 font-semibold">8-day Forecast</p>
