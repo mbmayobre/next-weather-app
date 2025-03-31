@@ -13,7 +13,7 @@ export const DarkModeToggle: FunctionComponent = () => {
     // Check if localStorage has a saved preference
     const storedPreference = localStorage.getItem('darkMode');
     // Check system preference if no localStorage preference exists.
-    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    // const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
     if (storedPreference === 'true') {
       setIsDarkMode(true);
