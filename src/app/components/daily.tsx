@@ -34,19 +34,19 @@ export const DailyWeather: FunctionComponent<DailyWeatherProps> = ({ weather }) 
         <p className="ml-3 font-semibold">8-day Forecast</p>
       </div>
       <div className="flex flex-wrap overflow-x-auto w-full p-4">
-        <div className="flex flex-row mx-auto pb-2">
+        <div className="flex flex-row mx-auto">
           {weather.daily.map((day, index) => (
-            <div key={index} className="flex flex-col mx-1 pt-2 pb-2 sm:pb-5 px-3 bg-gray-200 dark:bg-gray-800 rounded-full h-full max-w-min" >
+            <div key={index} className="flex flex-col mx-1 py-5 px-3 bg-gray-200 dark:bg-gray-800 rounded-full h-full max-w-min" >
               <p className="text-center">{Math.round(day.temp.max)}°</p>
-              <p className="text-center">{Math.round(day.temp.min)}°</p>
+              <p className="text-center text-gray-700 dark:text-gray-500">{Math.round(day.temp.min)}°</p>
               <img
                 className="flex w-full h-full object-cover my-2"
                 src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`}
                 alt="Daily Weather Icon"
               />
-              <p className="text-center text-xs text-gray-600">{day.pop > 0 ? `${Math.round(day.pop * 100)}%` : null}</p>
+              <p className="text-center text-xs text-blue-600 dark:text-blue-400">{day.pop > 0 ? `${Math.round(day.pop * 100)}%` : null}</p>
               <p className="text-center mx-auto w-10">{index === 0 ? 'Today' : formatDayAndDate(day.dt).day}</p>
-              <p className="text-center">{formatDayAndDate(day.dt).date}</p>
+              <p className="text-center text-gray-700 dark:text-gray-500">{formatDayAndDate(day.dt).date}</p>
             </div>
           ))}
         </div>
