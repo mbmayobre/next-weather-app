@@ -20,7 +20,7 @@ export const SearchBar: FunctionComponent<SearchBarProps> = ({ onSearch, loading
   };
 
   return (
-    <form className="w-full max-w-sm min-w-[300px]" onSubmit={handleSearch}>
+    <form className="w-full max-w-sm min-w-[345px]" onSubmit={handleSearch}>
       <div className="relative flex items-center">
         {/* Search Icon */}
         <FiSearch size={30} className="absolute w-7 h-7 pl-3 text-slate-600" />
