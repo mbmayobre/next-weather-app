@@ -7,6 +7,7 @@ import CurrentWeather from "../components/current-weather";
 import DarkModeToggle from "../components/dark-mode-toggle";
 import HourlyWeather from "../components/hourly";
 import DailyWeather from "../components/daily";
+import Precipitation from "../components/precipitation";
 
 export const Weather: FunctionComponent = () => {
   const [weather, setWeather] = useState<weather>();
@@ -128,6 +129,7 @@ export const Weather: FunctionComponent = () => {
           <CurrentWeather weather={weather} location={location} />
           <HourlyWeather weather={weather} />
           <DailyWeather weather={weather} />
+          <Precipitation weather={weather} />
         </div>
       )}
     </div>
