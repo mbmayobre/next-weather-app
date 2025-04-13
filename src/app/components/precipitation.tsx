@@ -20,12 +20,13 @@ export const Precipitation: FunctionComponent<PrecipitationProps> = ({ weather }
         <p className="ml-3 font-semibold">Precipitation</p>
       </div>
       <div className="flex flex-row justify-start items-center h-full">
-        <p className="text-2xl font-semibold">{convertMillimetersToInches(weather.daily[0].rain)}in</p>
+        {!weather.daily[0].rain && <p className="text-2xl font-semibold">0.00in</p>}
+        {weather.daily[0].rain && <p className="text-2xl font-semibold">{convertMillimetersToInches(weather.daily[0].rain)}in</p>}
       </div>
       <div className="flex flex-row justify-between items-center h-full">
-        <p className="text-sm text-gray-500 dark:text-gray-400">Total rain for the day</p>
+        <p className="text-xs text-gray-500 dark:text-gray-400">Total rain for the day</p>
         <img
-          className="w-40 h-40 object-cover"
+          className="w-15 h-15 object-cover"
           src={`https://openweathermap.org/img/wn/09d@2x.png`}
           alt="Weather Icon"
         />
