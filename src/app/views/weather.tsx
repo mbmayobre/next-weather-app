@@ -122,7 +122,7 @@ export const Weather: FunctionComponent = () => {
       </div>
 
       {/* Error Message */}
-      {error && <p className="text-red-500">{error}</p>}
+      {error && <p className="text-red-500 mt-16">{error}</p>}
 
       {weather && location && !error && (
         <div className="flex flex-wrap justify-center w-full">
