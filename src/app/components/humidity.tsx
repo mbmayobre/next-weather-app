@@ -2,7 +2,7 @@
 
 import { FunctionComponent } from "react";
 import { weather } from "../lib/definitions";
-import { WiRaindrop } from "react-icons/wi";
+import { GiWaterDrop } from "react-icons/gi";
 
 interface HumidityProps {
   weather: weather;
@@ -13,7 +13,7 @@ export const Humidity: FunctionComponent<HumidityProps> = ({ weather }) => {
   return (
     <div className="flex flex-col bg-gray-400 text-black dark:bg-black dark:text-white w-full h-[175px] rounded-2xl mt-4 p-4">
       <div className="flex flex-row justify-start ml-2 mt-2 mb-2">
-        <WiRaindrop size={30} className="font-bold" />
+        <GiWaterDrop size={25} className="font-bold" />
         <p className="ml-3 font-semibold">Humidity</p>
       </div>
       <div className="flex flex-row justify-start items-center h-full">

@@ -9,6 +9,7 @@ import HourlyWeather from "../components/hourly";
 import DailyWeather from "../components/daily";
 import Precipitation from "../components/precipitation";
 import Humidity from "../components/humidity";
+import Wind from "../components/wind";
 
 export const Weather: FunctionComponent = () => {
   const [weather, setWeather] = useState<weather>();
@@ -150,6 +151,9 @@ export const Weather: FunctionComponent = () => {
           <div className="flex flex-row justify-center w-full">
             <Precipitation weather={weather} />
             <Humidity weather={weather} />
+          </div>
+          <div className="flex flex-row justify-center w-full">
+            <Wind weather={weather} />
           </div>
         </div>
       )}
