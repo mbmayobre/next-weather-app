@@ -12,7 +12,7 @@ interface WindProps {
 export const Wind: FunctionComponent<WindProps> = ({ weather }) => {
 
   const convertDegreesToDirection = (degrees: number) => {
-    const directions = ["North", "Northeast", "East", "Southeast", "Sout", "Southwest", "West", "Northwest"];
+    const directions = ["North", "Northeast", "East", "Southeast", "South", "Southwest", "West", "Northwest"];
     return directions[Math.round(degrees / 45) % 8];
   };
 
