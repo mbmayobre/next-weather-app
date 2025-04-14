@@ -10,11 +10,6 @@ interface WindProps {
 }
 
 export const Wind: FunctionComponent<WindProps> = ({ weather }) => {
-  const [windDegree, setWindDegree] = useState<string>("");
-
-  useEffect(() => {
-    console.log('wind degree: ' + weather.current.wind_deg);
-  }, []);
 
   const convertDegreesToDirection = (degrees: number) => {
     const directions = ["North", "Northeast", "East", "Southeast", "Sout", "Southwest", "West", "Northwest"];
