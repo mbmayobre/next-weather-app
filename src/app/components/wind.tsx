@@ -1,6 +1,6 @@
 'use client'
 
-import { FunctionComponent, useEffect, useState } from "react";
+import { FunctionComponent } from "react";
 import { weather } from "../lib/definitions";
 import { LiaArrowAltCircleUpSolid } from "react-icons/lia";
 import { FaWind } from "react-icons/fa6";
