@@ -10,7 +10,7 @@ interface PrecipitationProps {
 
 export const Precipitation: FunctionComponent<PrecipitationProps> = ({ weather }) => {
   const convertMillimetersToInches = (mm: number) => {
-    return mm / 25.4;
+    return (mm / 25.4).toFixed(2);
   };
 
   return (
