@@ -27,7 +27,7 @@ export const AQI: FunctionComponent<AQIProps> = ({ data }) => {
         <p className="text-2xl font-semibold">{data.list[0].main.aqi}</p>
       </div>
       <div className="flex flex-row justify-between items-center ml-2 h-full">
-        <p className="text-xs text-gray-500 dark:text-gray-400">{aqiLevel(data.list[0].main.aqi)} air quality</p>
+        <p className="text-xs text-gray-800 dark:text-gray-400">{aqiLevel(data.list[0].main.aqi)} air quality</p>
       </div>
     </div>
   );

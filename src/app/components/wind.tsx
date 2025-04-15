@@ -27,7 +27,7 @@ export const Wind: FunctionComponent<WindProps> = ({ weather }) => {
       </div>
       <div className="flex flex-row justify-start items-center ml-2 h-full">
         <LiaArrowAltCircleUpSolid size={30} style={{ transform: `rotate(${weather.current.wind_deg + 180}deg)` }} className='font-bold' />
-        <p className="text-xs ml-4 text-gray-500 dark:text-gray-400">From {convertDegreesToDirection(weather.current.wind_deg)}</p>
+        <p className="text-xs ml-4 text-gray-800 dark:text-gray-400">From {convertDegreesToDirection(weather.current.wind_deg)}</p>
       </div>
     </div>
   );

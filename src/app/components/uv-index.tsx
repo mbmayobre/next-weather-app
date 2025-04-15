@@ -27,7 +27,7 @@ export const UVI: FunctionComponent<UVIProps> = ({ weather }) => {
         <p className="text-2xl font-semibold">{weather.current.uvi}</p>
       </div>
       <div className="flex flex-row justify-between items-center ml-2 h-full">
-        <p className="text-xs text-gray-500 dark:text-gray-400">{uviLevel(weather.current.uvi)}</p>
+        <p className="text-xs text-gray-800 dark:text-gray-400">{uviLevel(weather.current.uvi)}</p>
       </div>
     </div>
   );

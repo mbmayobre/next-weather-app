@@ -20,7 +20,7 @@ export const Humidity: FunctionComponent<HumidityProps> = ({ weather }) => {
         <p className="text-2xl font-semibold">{weather.current.humidity}%</p>
       </div>
       <div className="flex flex-row justify-between items-center ml-2 h-full">
-        <p className="text-xs text-gray-500 dark:text-gray-400">{weather.current.dew_point}° Dew Point</p>
+        <p className="text-xs text-gray-800 dark:text-gray-400">{weather.current.dew_point}° Dew Point</p>
       </div>
     </div>
   );
