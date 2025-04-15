@@ -14,6 +14,7 @@ import Pressure from "../components/pressure";
 import SunriseAndSunset from "../components/sunrise-sunset";
 import Visibility from "../components/visibility";
 import UVI from "../components/uv-index";
+import AQI from "../components/air-quality";
 
 export const Weather: FunctionComponent = () => {
   const [weather, setWeather] = useState<weather>();
@@ -191,6 +192,7 @@ export const Weather: FunctionComponent = () => {
           </div>
           <div className="flex flex-row justify-center w-full">
             <UVI weather={weather} />
+            <AQI data={aqi} />
           </div>
         </div>
       )}
