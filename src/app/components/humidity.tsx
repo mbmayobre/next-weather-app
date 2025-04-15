@@ -16,10 +16,10 @@ export const Humidity: FunctionComponent<HumidityProps> = ({ weather }) => {
         <GiWaterDrop size={25} className="font-bold" />
         <p className="ml-3 font-semibold">Humidity</p>
       </div>
-      <div className="flex flex-row justify-start items-center h-full">
+      <div className="flex flex-row justify-start items-center ml-2 h-full">
         <p className="text-2xl font-semibold">{weather.current.humidity}%</p>
       </div>
-      <div className="flex flex-row justify-between items-center h-full">
+      <div className="flex flex-row justify-between items-center ml-2 h-full">
         <p className="text-xs text-gray-500 dark:text-gray-400">{weather.current.dew_point}° Dew Point</p>
       </div>
     </div>

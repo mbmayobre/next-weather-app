@@ -22,10 +22,10 @@ export const Wind: FunctionComponent<WindProps> = ({ weather }) => {
         <FaWind size={25} className="font-bold" />
         <p className="ml-3 font-semibold">Wind</p>
       </div>
-      <div className="flex flex-row justify-start items-center h-full">
+      <div className="flex flex-row justify-start items-center ml-2 h-full">
         <p className="text-2xl font-semibold">{weather.current.wind_speed}mph</p>
       </div>
-      <div className="flex flex-row justify-start items-center h-full">
+      <div className="flex flex-row justify-start items-center ml-2 h-full">
         <LiaArrowAltCircleUpSolid size={30} style={{ transform: `rotate(${weather.current.wind_deg + 180}deg)` }} className='font-bold' />
         <p className="text-xs ml-4 text-gray-500 dark:text-gray-400">From {convertDegreesToDirection(weather.current.wind_deg)}</p>
       </div>

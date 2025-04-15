@@ -16,10 +16,10 @@ export const Pressure: FunctionComponent<PressureProps> = ({ weather }) => {
         <MdCompress size={25} className="font-bold" />
         <p className="ml-3 font-semibold">Pressure</p>
       </div>
-      <div className="flex flex-row justify-start items-center h-full">
+      <div className="flex flex-row justify-start items-center ml-2 h-full">
         <p className="text-2xl font-semibold">{(weather.current.pressure * 0.02953).toFixed(2)}</p>
       </div>
-      <div className="flex flex-row justify-between items-center h-full">
+      <div className="flex flex-row justify-between items-center ml-2 h-full">
         <p className="text-xs text-gray-500 dark:text-gray-400">inHg</p>
       </div>
     </div>
