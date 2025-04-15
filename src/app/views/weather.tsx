@@ -1,7 +1,7 @@
 'use client'
 
 import { FunctionComponent, useEffect, useState, useCallback } from "react";
-import { weather, location } from "../lib/definitions";
+import { weather, location, air_quality } from "../lib/definitions";
 import SearchBar from "../components/searchbar";
 import CurrentWeather from "../components/current-weather";
 import DarkModeToggle from "../components/dark-mode-toggle";
@@ -17,6 +17,7 @@ import UVI from "../components/uv-index";
 
 export const Weather: FunctionComponent = () => {
   const [weather, setWeather] = useState<weather>();
+  const [aqi, setAqi] = useState<air_quality>();
   const [latitude, setLatitude] = useState<string>("");
   const [longitude, setLongitude] = useState<string>("");
   const [location, setLocation] = useState<location>();
@@ -41,6 +42,29 @@ export const Weather: FunctionComponent = () => {
     } catch (error) {
       console.error(error);
       setError("Unable to fetch weather data");
+    } finally {
+      setLoading(false);
+    }
+  }, [latitude, longitude]);
+
+  // Fetch air pollution data
+  const fetchAirQuality = useCallback(async () => {
+    if (!latitude || !longitude) return;
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_AIR_POLLUTION_API_URL}?lat=${latitude}&lon=${longitude}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+      );
+
+      if (!res.ok) throw new Error("Failed to fetch air quality data");
+
+      const data = await res.json();
+      setAqi(data);
+      console.log(data);
+    } catch (error) {
+      console.error(error);
+      setError("Unable to fetch air quality data");
     } finally {
       setLoading(false);
     }
@@ -115,6 +139,7 @@ export const Weather: FunctionComponent = () => {
   useEffect(() => {
     if (!!latitude && !!longitude) {
       fetchWeather();
+      fetchAirQuality();
       fetchLocationName();
     }
   }, [latitude, longitude]);
@@ -147,7 +172,7 @@ export const Weather: FunctionComponent = () => {
       {/* Error Message */}
       {error && <p className="text-red-500 mt-16">{error}</p>}
 
-      {weather && location && !error && (
+      {weather && aqi && location && !error && (
         <div className="flex flex-wrap justify-center w-full">
           <CurrentWeather weather={weather} location={location} />
           <HourlyWeather weather={weather} />
