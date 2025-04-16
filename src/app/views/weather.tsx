@@ -155,7 +155,7 @@ export const Weather: FunctionComponent = () => {
     } else {
       setLoading(false);
     }
-  }, [weather, aqi])
+  }, [weather, aqi, weatherLoading, aqiLoading, locationLoading, locationNameLoading]);
 
   const handleGetCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
