@@ -27,6 +27,7 @@ export const Weather: FunctionComponent = () => {
   const [aqiLoading, setAqiLoading] = useState<boolean>(false);
   const [locationLoading, setLocationLoading] = useState<boolean>(false);
   const [locationNameLoading, setLocationNameLoading] = useState<boolean>(false);
+  const [currentLocationLoading, setCurrentLocationLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch weather data
@@ -150,7 +151,7 @@ export const Weather: FunctionComponent = () => {
   }, [latitude, longitude]);
 
   useEffect(() => {
-    if (weatherLoading || aqiLoading || locationLoading || locationNameLoading) {
+    if (weatherLoading || aqiLoading || locationLoading || locationNameLoading || currentLocationLoading) {
       setLoading(true);
     } else {
       setLoading(false);
@@ -158,19 +159,23 @@ export const Weather: FunctionComponent = () => {
   }, [weather, aqi, weatherLoading, aqiLoading, locationLoading, locationNameLoading]);
 
   const handleGetCurrentLocation = useCallback(() => {
+    setCurrentLocationLoading(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setLatitude(position.coords.latitude.toString());
           setLongitude(position.coords.longitude.toString());
+          setCurrentLocationLoading(false);
         },
         (error) => {
           console.error("Error fetching location:", error);
           setError("Unable to retrieve your location. Please enable location services in your browser.");
+          setCurrentLocationLoading(false);
         }
       );
     } else {
       setError("Geolocation is not supported by your browser.");
+      setCurrentLocationLoading(false);
     }
   }, []);
 
