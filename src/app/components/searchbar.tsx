@@ -51,7 +51,7 @@ export const SearchBar: FunctionComponent<SearchBarProps> = ({ onSearch, handleC
         {/* Search Button */}
         <button
           type="submit"
-          className="ml-2 w-[90px] font-semibold rounded-md bg-gray-200 dark:bg-slate-800 border border-black dark:border-opacity-0 text-black dark:text-white py-2 px-4 text-center text-sm transition-all shadow-md focus:bg-slate-700 focus:shadow-none disabled:pointer-events-none disabled:opacity-80 disabled:shadow-none"
+          className="ml-2 w-[90px] font-semibold rounded-md bg-gray-200 dark:bg-slate-800 border border-black dark:border-opacity-0 text-black dark:text-white py-2 px-4 text-center text-sm transition-all shadow-md disabled:pointer-events-none disabled:opacity-80 disabled:shadow-none"
           disabled={loading}
         >
           {loading ? "Loading..." : "Search"}
@@ -61,7 +61,7 @@ export const SearchBar: FunctionComponent<SearchBarProps> = ({ onSearch, handleC
         <button
           type="button"
           onClick={handleCurrentLocation}
-          className="ml-2 w-auto rounded-md bg-gray-200 dark:bg-slate-800 border border-black dark:border-opacity-0 text-black dark:text-white py-2 px-4 text-center text-sm transition-all shadow-md focus:bg-slate-700 focus:shadow-none disabled:pointer-events-none disabled:opacity-80 disabled:shadow-none"
+          className="ml-2 w-auto rounded-md bg-gray-200 dark:bg-slate-800 border border-black dark:border-opacity-0 text-black dark:text-white py-2 px-4 text-center text-sm transition-all shadow-md disabled:pointer-events-none disabled:opacity-80 disabled:shadow-none"
           disabled={loading}
         >
           <FaLocationCrosshairs size={20} />
