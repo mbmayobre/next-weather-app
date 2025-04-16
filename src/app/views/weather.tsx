@@ -23,12 +23,16 @@ export const Weather: FunctionComponent = () => {
   const [longitude, setLongitude] = useState<string>("");
   const [location, setLocation] = useState<location>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [weatherLoading, setWeatherLoading] = useState<boolean>(false);
+  const [aqiLoading, setAqiLoading] = useState<boolean>(false);
+  const [locationLoading, setLocationLoading] = useState<boolean>(false);
+  const [locationNameLoading, setLocationNameLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch weather data
   const fetchWeather = useCallback(async () => {
     if (!latitude || !longitude) return;
-    setLoading(true);
+    setWeatherLoading(true);
     setError(null);
     try {
       const res = await fetch(
@@ -44,14 +48,14 @@ export const Weather: FunctionComponent = () => {
       console.error(error);
       setError("Unable to fetch weather data");
     } finally {
-      setLoading(false);
+      setWeatherLoading(false);
     }
   }, [latitude, longitude]);
 
   // Fetch air pollution data
   const fetchAirQuality = useCallback(async () => {
     if (!latitude || !longitude) return;
-    setLoading(true);
+    setAqiLoading(true);
     setError(null);
     try {
       const res = await fetch(
@@ -67,13 +71,13 @@ export const Weather: FunctionComponent = () => {
       console.error(error);
       setError("Unable to fetch air quality data");
     } finally {
-      setLoading(false);
+      setAqiLoading(false);
     }
   }, [latitude, longitude]);
 
   // Fetch location data (Geocoding API)
   const fetchLocation = useCallback(async (city: string) => {
-    setLoading(true);
+    setLocationLoading(true);
     setError(null);
     
     try {
@@ -111,13 +115,13 @@ export const Weather: FunctionComponent = () => {
         setError("An unknown error occurred");
       }
     } finally {
-      setLoading(false);
+      setLocationLoading(false);
     }
   }, []);
 
   const fetchLocationName = useCallback(async () => {
     if (!latitude || !longitude) return;
-    setLoading(true);
+    setLocationNameLoading(true);
     setError(null);
 
     try {
@@ -133,7 +137,7 @@ export const Weather: FunctionComponent = () => {
       console.error(error);
       setError("Unable to fetch location name");
     } finally {
-      setLoading(false);
+      setLocationNameLoading(false);
     }
   }, [latitude, longitude]);
 
@@ -144,6 +148,14 @@ export const Weather: FunctionComponent = () => {
       fetchLocationName();
     }
   }, [latitude, longitude]);
+
+  useEffect(() => {
+    if (weatherLoading || aqiLoading || locationLoading || locationNameLoading) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [weather, aqi])
 
   const handleGetCurrentLocation = useCallback(() => {
     if (navigator.geolocation) {
