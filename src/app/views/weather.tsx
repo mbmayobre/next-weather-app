@@ -180,9 +180,9 @@ export const Weather: FunctionComponent = () => {
   }, []);
 
   return (
-    <div className="relative w-full sm:w-3/4 flex justify-center p-4">
+    <div className="relative w-full sm:w-3/4 md:columns-2 flex justify-center p-4">
       {/* Search Bar */}
-      <div className="absolute top-0 w-1/2 mx-auto flex justify-center p-4">
+      <div className="fixed top-0 w-full mx-auto flex justify-center p-4 bg-[#ffffff] dark:bg-[#1d1e22]">
         <SearchBar onSearch={fetchLocation} handleCurrentLocation={handleGetCurrentLocation} loading={loading} />
         <DarkModeToggle />
       </div>
@@ -191,26 +191,30 @@ export const Weather: FunctionComponent = () => {
       {error && <p className="text-red-500 mt-16">{error}</p>}
 
       {weather && aqi && location && !error && (
-        <div className="flex flex-wrap justify-center w-full">
-          <CurrentWeather weather={weather} location={location} />
-          <HourlyWeather weather={weather} />
-          <DailyWeather weather={weather} />
-          <div className="flex flex-row justify-center w-full">
-            <Precipitation weather={weather} />
-            <Humidity weather={weather} />
+        <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-start w-full">
+          <div className="flex justify-center w-full mt-20 md:fixed md:mt-[20vh] md:w-1/3 md:h-1/2 md:p-4">
+            <CurrentWeather weather={weather} location={location} />
           </div>
-          <div className="flex flex-row justify-center w-full">
-            <Wind weather={weather} />
-            <Pressure weather={weather} />
-          </div>
-          <div className="flex flex-row justify-center w-full">
-            <SunriseAndSunset weather={weather} />
-            <Visibility weather={weather} />
-          </div>
-          <div className="flex flex-row justify-center w-full">
-            <UVI weather={weather} />
-            <AQI data={aqi} />
-          </div>
+          <div className="flex flex-wrap justify-center w-full md:mt-20 md:ml-auto md:w-1/2 md:p-4">
+            <HourlyWeather weather={weather} />
+            <DailyWeather weather={weather} />
+            <div className="flex flex-row justify-center w-full">
+              <Precipitation weather={weather} />
+              <Humidity weather={weather} />
+            </div>
+            <div className="flex flex-row justify-center w-full">
+              <Wind weather={weather} />
+              <Pressure weather={weather} />
+            </div>
+            <div className="flex flex-row justify-center w-full">
+              <SunriseAndSunset weather={weather} />
+              <Visibility weather={weather} />
+            </div>
+            <div className="flex flex-row justify-center w-full">
+              <UVI weather={weather} />
+              <AQI data={aqi} />
+            </div>
+          </div>          
         </div>
       )}
     </div>
