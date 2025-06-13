@@ -192,7 +192,7 @@ export const Weather: FunctionComponent = () => {
 
       {weather && aqi && location && !error && (
         <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-start w-full">
-          <div className="flex justify-center w-full mt-20 md:fixed md:mt-[20vh] md:w-1/2 lg:w-2/5 min-h-fit md:h-[60vh] md:p-4">
+          <div className="flex justify-center w-full mt-20 md:fixed md:w-1/2 lg:w-2/5 h-auto lg:h-[60vh] md:p-4">
             <CurrentWeather weather={weather} location={location} />
           </div>
           <div className="flex flex-wrap justify-center w-full md:mt-20 md:ml-auto md:w-1/2 md:p-4">
