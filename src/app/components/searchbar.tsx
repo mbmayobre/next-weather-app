@@ -25,12 +25,12 @@ export const SearchBar: FunctionComponent<SearchBarProps> = ({ onSearch, handleC
     <form className="w-full max-w-sm min-w-[345px]" onSubmit={handleSearch}>
       <div className="relative flex items-center">
         {/* Search Icon */}
-        <FiSearch size={30} className="absolute w-7 h-7 pl-3 text-slate-600" />
+        <FiSearch size={30} className="absolute w-7 h-7 pl-3 text-slate-800 dark:text-slate-800" />
 
         <div className="relative w-full">
           {/* Search Input */}
           <input
-            className="w-full bg-transparent text-slate-800 dark:text-slate-300 text-sm border border-black dark:border-white placeholder-gray-500 rounded-md pl-10 pr-10 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 focus:placeholder:invisible hover:border-slate-500 shadow-sm focus:shadow"
+            className="w-full bg-transparent text-slate-800 dark:text-slate-300 text-sm border border-black dark:border-white placeholder-gray-800 dark:placeholder-gray-300 rounded-md pl-10 pr-10 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 focus:placeholder:invisible hover:border-slate-500 shadow-sm focus:shadow"
             placeholder="Enter location..."
             value={city}
             onChange={(e) => setCity(e.target.value)}

@@ -23,7 +23,7 @@ export const HourlyWeather: FunctionComponent<HourlyProps> = ({ weather }) => {
   
 
   return (
-    <div className="flex flex-wrap bg-gray-200 text-black dark:bg-black dark:text-white mt-4 md:mt-0 h-[235px] w-full p-4 rounded-2xl">
+    <div className="flex flex-wrap bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white mt-4 md:mt-0 h-[235px] w-full p-4 rounded-2xl">
       <div className="flex flex-row items-center ml-3 mb-4 mt-3">
         <TbClockHour4 size={25} className="font-bold" />
         <p className="ml-3 font-semibold">Hourly Forecast</p>

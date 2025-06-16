@@ -11,7 +11,7 @@ interface CurrentWeatherProps {
 export const CurrentWeather: FunctionComponent<CurrentWeatherProps> = ({ weather, location }) => {
 
   return (
-    <div className="flex flex-row justify-between md:items-center bg-gray-200 text-black dark:bg-black dark:text-white w-full py-4 px-8 rounded-2xl text-black mr-0 md:mr-4">
+    <div className="flex flex-row justify-between md:items-center bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white w-full py-4 px-8 rounded-2xl text-black mr-0 md:mr-4">
       <div>
         <h2 className="text-xl font-semibold mb-5">{location?.name}, {location?.country}</h2>
         <p className="text-5xl sm:text-6xl mb-5">{weather.current.temp}°F</p>
