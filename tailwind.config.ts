@@ -17,7 +17,6 @@ export default {
         'sunny': "url('/background-images/sunny-background.webp')",
         'snow': "url('/background-images/snow-background.webp')",
         'rain': "url('/background-images/moderate-rain-background.webp')",
-        'heavy-rain': "url('/background-images/heavy-rain-background.webp')",
         'cloudy': "url('/background-images/cloudy-background.webp')",
         'fog': "url('/background-images/foggy-background.webp')",
         'thunderstorm': "url('/background-images/thunderstorm-background.webp')",
