@@ -30,7 +30,7 @@ export const SearchBar: FunctionComponent<SearchBarProps> = ({ onSearch, handleC
         <div className="relative w-full">
           {/* Search Input */}
           <input
-            className="w-full bg-transparent text-slate-800 dark:text-slate-300 text-sm border border-black dark:border-white placeholder-gray-800 dark:placeholder-gray-300 rounded-md pl-10 pr-10 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 focus:placeholder:invisible hover:border-slate-500 shadow-sm focus:shadow"
+            className="w-full bg-gray-200 bg-opacity-40 dark:bg-black dark:bg-opacity-40 text-slate-800 dark:text-slate-300 text-sm border border-black dark:border-white placeholder-gray-800 dark:placeholder-gray-300 rounded-md pl-10 pr-10 py-2 transition duration-300 ease focus:outline-none focus:border-slate-400 focus:placeholder:invisible hover:border-slate-500 shadow-sm focus:shadow"
             placeholder="Enter location..."
             value={city}
             onChange={(e) => setCity(e.target.value)}
