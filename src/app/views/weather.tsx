@@ -15,8 +15,13 @@ import SunriseAndSunset from "../components/sunrise-sunset";
 import Visibility from "../components/visibility";
 import UVI from "../components/uv-index";
 import AQI from "../components/air-quality";
+import { getBackgroundFromIcon, type Background } from "../utils/dictionary";
 
-export const Weather: FunctionComponent = () => {
+interface WeatherProps {
+  onBackgroundChange: (bg: Background) => void
+}
+
+export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange }) => {
   const [weather, setWeather] = useState<weather>();
   const [aqi, setAqi] = useState<air_quality>();
   const [latitude, setLatitude] = useState<string>("");
@@ -157,6 +162,13 @@ export const Weather: FunctionComponent = () => {
       setLoading(false);
     }
   }, [weather, aqi, weatherLoading, aqiLoading, locationLoading, locationNameLoading]);
+
+  useEffect(() => {
+    if (weather) {
+      const bg = getBackgroundFromIcon(weather.current.weather[0].icon, weather.current.weather[0].id);
+      onBackgroundChange(bg);
+    }
+  }, [weather, latitude, longitude, onBackgroundChange]);
 
   const handleGetCurrentLocation = useCallback(() => {
     setCurrentLocationLoading(true);

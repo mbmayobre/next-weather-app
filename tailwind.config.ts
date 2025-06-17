@@ -14,7 +14,7 @@ export default {
         foreground: "var(--foreground)",
       },
       backgroundImage: {
-        'sunny': "url('/background-images/sunny-background.webp')",
+        'clear-day': "url('/background-images/sunny-background.webp')",
         'snow': "url('/background-images/snow-background.webp')",
         'rain': "url('/background-images/moderate-rain-background.webp')",
         'cloudy': "url('/background-images/cloudy-background.webp')",
@@ -24,6 +24,7 @@ export default {
         'clear-night': "url('/background-images/clear-night-background.webp')",
         'partly-cloudy-day': "url('/background-images/partly-cloudy-background.webp')",
         'partly-cloudy-night': "url('/background-images/partly-cloudy-night-background.webp')",
+        'home': "",
       },
     },
   },
