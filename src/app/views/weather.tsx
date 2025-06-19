@@ -15,7 +15,8 @@ import SunriseAndSunset from "../components/sunrise-sunset";
 import Visibility from "../components/visibility";
 import UVI from "../components/uv-index";
 import AQI from "../components/air-quality";
-import { getBackgroundFromIcon, type Background } from "../utils/dictionary";
+import { type Background } from "../utils/dictionary";
+import { getBackgroundFromIcon } from "../utils/image-requests";
 
 interface WeatherProps {
   onBackgroundChange: (bg: Background) => void
