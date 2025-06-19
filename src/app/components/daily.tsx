@@ -3,6 +3,7 @@
 import { FunctionComponent } from "react";
 import { weather } from "../lib/definitions";
 import { MdOutlineCalendarToday } from "react-icons/md";
+import { getIconFromIcon } from "../utils/image-requests";
 
 interface DailyWeatherProps {
   weather: weather;
@@ -40,11 +41,11 @@ export const DailyWeather: FunctionComponent<DailyWeatherProps> = ({ weather }) 
               <p className="text-center">{Math.round(day.temp.max)}°</p>
               <p className="text-center text-gray-700 dark:text-gray-500">{Math.round(day.temp.min)}°</p>
               <img
-                className="flex w-full h-full object-cover my-2"
-                src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`}
+                className="flex w-full h-full object-cover mb-2 mt-6"
+                src={`/icons/${getIconFromIcon(day.weather[0].icon, day.weather[0].id)}.svg`}
                 alt="Daily Weather Icon"
               />
-              <p className="text-center text-xs text-blue-600 dark:text-blue-400">{day.pop > 0 ? `${Math.round(day.pop * 100)}%` : null}</p>
+              <p className={`text-center text-xs text-blue-600 dark:text-blue-400 ${day.pop > 0 ? 'opacity-100' : 'opacity-0'}`}>{`${Math.round(day.pop * 100)}%`}</p>
               <p className="text-center mx-auto w-10">{index === 0 ? 'Today' : formatDayAndDate(day.dt).day}</p>
               <p className="text-center text-gray-700 dark:text-gray-500">{formatDayAndDate(day.dt).date}</p>
             </div>

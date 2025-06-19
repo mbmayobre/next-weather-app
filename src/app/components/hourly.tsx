@@ -3,6 +3,7 @@
 import { FunctionComponent } from "react";
 import { weather } from "../lib/definitions";
 import { TbClockHour4 } from "react-icons/tb";
+import { getIconFromIcon } from "../utils/image-requests";
 
 interface HourlyProps {
   weather: weather;
@@ -28,16 +29,16 @@ export const HourlyWeather: FunctionComponent<HourlyProps> = ({ weather }) => {
         <TbClockHour4 size={25} className="font-bold" />
         <p className="ml-3 font-semibold">Hourly Forecast</p>
       </div>
-      <div className="flex flex-row overflow-x-scroll pl-4 pt-4 pr-4 pb-8">
+      <div className="flex flex-row overflow-x-scroll pl-4 pt-4 pr-4 pb-4">
         {weather.hourly.slice(0, 25).map((hour, index) => (
           <div key={index} className="flex flex-col justify-center px-3 min-w-max h-full">
             <p className="flex justify-center w-full">{Math.round(hour.temp)}°</p>
             <img
-              className="flex w-[40px] h-[40px] object-cover my-auto"
-              src={`https://openweathermap.org/img/wn/${hour.weather[0].icon}.png`}
+              className="flex w-[40px] h-[40px] object-cover my-auto mt-4"
+              src={`/icons/${getIconFromIcon(hour.weather[0].icon, hour.weather[0].id)}.svg`}
               alt="Hourly Weather Icon"
             />
-            <p className="text-center text-xs text-blue-600 dark:text-blue-400 mb-1">{hour.pop > 0 ? `${Math.round(hour.pop * 100)}%` : null}</p>
+            <p className={`text-center text-xs text-blue-600 dark:text-blue-400 mb-1 ${hour.pop > 0 ? 'opacity-100' : 'opacity-0'}`}>{`${Math.round(hour.pop * 100)}%`}</p>
             <p className="text-center text-xs">{formatHour(hour.dt)}</p>
           </div>
         ))}
