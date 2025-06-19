@@ -10,15 +10,20 @@ interface SunriseAndSunsetProps {
 }
 
 export const SunriseAndSunset: FunctionComponent<SunriseAndSunsetProps> = ({ weather }) => {
-  const sunriseDate = new Date(weather.current.sunrise * 1000); // Convert to milliseconds
-  const sunsetDate = new Date(weather.current.sunset * 1000); // Convert to milliseconds
+  const { sunrise, sunset } = weather.current;
+  const tzName = weather.timezone;
 
-  const formattedTime = (date: Date) => {
-    return date.toLocaleTimeString('en-US', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  })};
+  const formatTime = (
+    unixSec: number,
+    tz: string
+  ): string => {
+    return new Date(unixSec * 1000).toLocaleTimeString("en-US", {
+      hour:      "numeric",
+      minute:    "2-digit",
+      hour12:    true,
+      timeZone:  tz,
+    });
+  }
 
   return (
     <div className="flex flex-col bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white w-full h-[175px] rounded-2xl mt-4 mr-4 p-4">
@@ -27,8 +32,8 @@ export const SunriseAndSunset: FunctionComponent<SunriseAndSunsetProps> = ({ wea
         <p className="ml-3 font-semibold">Sunrise & Sunset</p>
       </div>
       <div className="flex flex-col justify-center items-start ml-2 h-full">
-        <p className="flex flex-nowrap text-sm mb-3"><TbSunrise size={20} className="mr-2" />{formattedTime(sunriseDate)}</p>
-        <p className="flex flex-nowrap text-sm"><TbSunset size={20} className="mr-2" />{formattedTime(sunsetDate)}</p>
+        <p className="flex flex-nowrap text-sm mb-3"><TbSunrise size={20} className="mr-2" />{formatTime(sunrise, tzName)}</p>
+        <p className="flex flex-nowrap text-sm"><TbSunset size={20} className="mr-2" />{formatTime(sunset, tzName)}</p>
       </div>
     </div>
   );
