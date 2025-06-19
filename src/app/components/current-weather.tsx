@@ -1,7 +1,9 @@
 'use client'
 
-import { FunctionComponent } from "react";
+import { FunctionComponent, useEffect, useState } from "react";
 import { weather, location } from "../lib/definitions";
+import { getIconFromIcon } from "../utils/image-requests";
+import { type WeatherIcon } from "../utils/dictionary";
 
 interface CurrentWeatherProps {
   weather: weather;
@@ -9,6 +11,16 @@ interface CurrentWeatherProps {
 }
 
 export const CurrentWeather: FunctionComponent<CurrentWeatherProps> = ({ weather, location }) => {
+  const [weatherIcon, setWeatherIcon] = useState<WeatherIcon>('clear-day');
+
+  useEffect(() => {
+    if (weather && location) {
+      const icon = weather.current.weather[0].icon;
+      const code = weather.current.weather[0].id;
+      const weatherIcon = getIconFromIcon(icon, code);
+      setWeatherIcon(weatherIcon);
+    }
+  }, [weather, location]);
 
   return (
     <div className="flex flex-row justify-between md:items-center bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white w-full py-4 px-8 rounded-2xl text-black mr-0 md:mr-4">
@@ -24,7 +36,7 @@ export const CurrentWeather: FunctionComponent<CurrentWeatherProps> = ({ weather
       <div className="flex items-center">
         <img
           className="w-40 h-40 object-cover"
-          src={`https://openweathermap.org/img/wn/${weather.current.weather[0].icon}@2x.png`}
+          src={`/icons/${weatherIcon}.svg`}
           alt="Weather Icon"
         />
       </div>
