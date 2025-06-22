@@ -17,6 +17,7 @@ import UVI from "../components/uv-index";
 import AQI from "../components/air-quality";
 import { type Background } from "../utils/dictionary";
 import { getBackgroundFromIcon } from "../utils/image-requests";
+import Alerts from "../components/alerts";
 
 interface WeatherProps {
   onBackgroundChange: (bg: Background) => void
@@ -209,6 +210,9 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
             <CurrentWeather weather={weather} location={location} />
           </div>
           <div className="flex flex-wrap justify-center w-full md:mt-10 md:ml-auto md:w-1/2 md:p-4">
+            {weather.alerts && weather.alerts.length > 0 && (
+              <Alerts weather={weather} />
+            )}
             <HourlyWeather weather={weather} />
             <DailyWeather weather={weather} />
             <div className="flex flex-row justify-center w-full">
