@@ -24,7 +24,17 @@ export const Precipitation: FunctionComponent<PrecipitationProps> = ({ weather }
         {weather.daily[0].rain && <p className="text-2xl font-semibold">{convertMillimetersToInches(weather.daily[0].rain)}in</p>}
       </div>
       <div className="flex flex-row justify-between items-center ml-2 h-full">
-        <p className="text-xs text-gray-800 dark:text-gray-400">Total rain for the day</p>
+        <div>
+          <p className="text-xs text-wrap text-gray-800 dark:text-gray-400">Total rain</p>
+          <p className="text-xs text-wrap text-gray-800 dark:text-gray-400">for the day</p>
+        </div>
+        <div className="flex items-center">
+          <img
+            className="w-10 h-10 object-contain"
+            src={`/icons/rain.svg`}
+            alt="Weather Icon"
+          />
+        </div>
       </div>
     </div>
   );
