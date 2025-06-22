@@ -25,7 +25,7 @@ export const SearchBar: FunctionComponent<SearchBarProps> = ({ onSearch, handleC
     <form className="w-full max-w-sm min-w-[345px]" onSubmit={handleSearch}>
       <div className="relative flex items-center">
         {/* Search Icon */}
-        <FiSearch size={30} className="absolute w-7 h-7 pl-3 text-slate-800 dark:text-slate-800" />
+        <FiSearch size={30} className="absolute w-7 h-7 pl-3 text-gray-950 dark:text-gray-500" />
 
         <div className="relative w-full">
           {/* Search Input */}
@@ -41,7 +41,7 @@ export const SearchBar: FunctionComponent<SearchBarProps> = ({ onSearch, handleC
             <button
               type="button"
               onClick={() => setCity("")}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-500 hover:text-gray-700"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-700 dark:text-gray-500 hover:text-gray-900"
             >
               <IoMdClose size={20} />
             </button>
