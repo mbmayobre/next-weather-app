@@ -1,4 +1,4 @@
-import { Background, WeatherIcon } from './dictionary';
+import { Background, WeatherIcon, PressureBackground } from './dictionary';
 
 export function getBackgroundFromCode(code: number): Background {
   switch (true) {
@@ -16,6 +16,23 @@ export function getBackgroundFromCode(code: number): Background {
       return 'cloudy';
     default:
       return 'home';
+  }
+}
+
+export function getPressureBackgroundFromValue(value: number): PressureBackground {
+  switch (true) {
+    case value < 29.4:
+      return 'pressure-very-low';
+    case value >= 29.4 && value < 29.8:
+      return 'pressure-low';
+    case value >= 29.8 && value < 30.2:
+      return 'pressure-normal';
+    case value >= 30.2 && value < 30.5:
+      return 'pressure-high';
+    case value >= 30.5:
+      return 'pressure-very-high';
+    default:
+      return 'pressure-normal';
   }
 }
 
