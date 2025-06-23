@@ -33,7 +33,14 @@ export type WeatherIcon =
   | 'snow'
   | 'thunder-and-rain'
   | 'thunder'
-  | 'very-cloudy'
+  | 'very-cloudy';
+
+export type PressureBackground =
+  | 'pressure-very-low'
+  | 'pressure-low'
+  | 'pressure-normal'
+  | 'pressure-high'
+  | 'pressure-very-high';
 
 export const bgClassMap: Record<Background, string> = {
   'thunderstorm':        'bg-thunderstorm',
@@ -47,4 +54,12 @@ export const bgClassMap: Record<Background, string> = {
   'partly-cloudy-night': 'bg-partly-cloudy-night',
   'cloudy':              'bg-cloudy',
   'home':                'bg-home',
-} 
+};
+
+export const pressureClassMap: Record<PressureBackground, string> = {
+  'pressure-very-low':  'bg-pressure-very-low',
+  'pressure-low':       'bg-pressure-low',
+  'pressure-normal':    'bg-pressure-normal',
+  'pressure-high':      'bg-pressure-high',
+  'pressure-very-high': 'bg-pressure-very-high',
+};
