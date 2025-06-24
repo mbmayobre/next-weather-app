@@ -49,6 +49,13 @@ export type HumidityBackground =
   | 'humidity-high'
   | 'humidity-very-high';
 
+export type AirQualityBackground =
+  | 'air-quality-very-poor'
+  | 'air-quality-poor'
+  | 'air-quality-moderate'
+  | 'air-quality-fair'
+  | 'air-quality-good';
+
 export const bgClassMap: Record<Background, string> = {
   'thunderstorm':        'bg-thunderstorm',
   'light-rain':          'bg-light-rain',
@@ -77,4 +84,12 @@ export const humidityClassMap: Record<HumidityBackground, string> = {
   'humidity-moderate':  'bg-humidity-moderate',
   'humidity-high':      'bg-humidity-high',
   'humidity-very-high': 'bg-humidity-very-high',
+};
+
+export const airQualityClassMap: Record<AirQualityBackground, string> = {
+  'air-quality-very-poor': 'bg-air-quality-very-poor',
+  'air-quality-poor':      'bg-air-quality-poor',
+  'air-quality-moderate':  'bg-air-quality-moderate',
+  'air-quality-fair':      'bg-air-quality-fair',
+  'air-quality-good':      'bg-air-quality-good',
 };
