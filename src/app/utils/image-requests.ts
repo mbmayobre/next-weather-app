@@ -85,6 +85,23 @@ export function getIconFromCode(code: number): WeatherIcon {
   }
 }
 
+export function getHumidityBackgroundFromValue(value: number): string {
+  switch (true) {
+    case value < 20:
+      return 'humidity-very-low';
+    case value >= 20 && value < 40:
+      return 'humidity-low';
+    case value >= 40 && value < 60:
+      return 'humidity-moderate';
+    case value >= 60 && value < 80:
+      return 'humidity-high';
+    case value >= 80:
+      return 'humidity-very-high';
+    default:
+      return 'humidity-moderate';
+  }
+}
+
 export function getBackgroundFromIcon(icon: string, code: number): Background {
   const isDay = icon.endsWith('d');
 

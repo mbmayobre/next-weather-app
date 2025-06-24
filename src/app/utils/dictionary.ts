@@ -42,6 +42,13 @@ export type PressureBackground =
   | 'pressure-high'
   | 'pressure-very-high';
 
+export type HumidityBackground =
+  | 'humidity-very-low'
+  | 'humidity-low'
+  | 'humidity-moderate'
+  | 'humidity-high'
+  | 'humidity-very-high';
+
 export const bgClassMap: Record<Background, string> = {
   'thunderstorm':        'bg-thunderstorm',
   'light-rain':          'bg-light-rain',
@@ -62,4 +69,12 @@ export const pressureClassMap: Record<PressureBackground, string> = {
   'pressure-normal':    'bg-pressure-normal',
   'pressure-high':      'bg-pressure-high',
   'pressure-very-high': 'bg-pressure-very-high',
+};
+
+export const humidityClassMap: Record<HumidityBackground, string> = {
+  'humidity-very-low':  'bg-humidity-very-low',
+  'humidity-low':       'bg-humidity-low',
+  'humidity-moderate':  'bg-humidity-moderate',
+  'humidity-high':      'bg-humidity-high',
+  'humidity-very-high': 'bg-humidity-very-high',
 };
