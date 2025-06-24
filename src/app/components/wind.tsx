@@ -27,7 +27,7 @@ export const Wind: FunctionComponent<WindProps> = ({ weather }) => {
         <p className="text-2xl font-semibold">{weather.current.wind_speed}mph</p>
       </div>
       <div className="flex z-[2] flex-row justify-start items-center ml-2 h-full">
-        <p className="text-xs ml-4 text-gray-800 dark:text-gray-400">From {convertDegreesToDirection(weather.current.wind_deg)}</p>
+        <p className="text-xs text-gray-800 dark:text-gray-400">From {convertDegreesToDirection(weather.current.wind_deg)}</p>
       </div>
       <img
         src="/icons/arrow.svg"
