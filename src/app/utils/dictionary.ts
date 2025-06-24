@@ -56,6 +56,13 @@ export type AirQualityBackground =
   | 'air-quality-fair'
   | 'air-quality-good';
 
+export type UVIndexBackground =
+  | 'uv-index-low'
+  | 'uv-index-moderate'
+  | 'uv-index-high'
+  | 'uv-index-very-high'
+  | 'uv-index-extreme';
+
 export const bgClassMap: Record<Background, string> = {
   'thunderstorm':        'bg-thunderstorm',
   'light-rain':          'bg-light-rain',
@@ -92,4 +99,12 @@ export const airQualityClassMap: Record<AirQualityBackground, string> = {
   'air-quality-moderate':  'bg-air-quality-moderate',
   'air-quality-fair':      'bg-air-quality-fair',
   'air-quality-good':      'bg-air-quality-good',
+};
+
+export const uvIndexClassMap: Record<UVIndexBackground, string> = {
+  'uv-index-low':       'bg-uv-index-low',
+  'uv-index-moderate':  'bg-uv-index-moderate',
+  'uv-index-high':      'bg-uv-index-high',
+  'uv-index-very-high': 'bg-uv-index-very-high',
+  'uv-index-extreme':   'bg-uv-index-extreme',
 };

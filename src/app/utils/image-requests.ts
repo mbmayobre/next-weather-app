@@ -1,4 +1,4 @@
-import { Background, WeatherIcon, PressureBackground, HumidityBackground, AirQualityBackground } from './dictionary';
+import { Background, WeatherIcon, PressureBackground, HumidityBackground, AirQualityBackground, UVIndexBackground } from './dictionary';
 
 export function getBackgroundFromCode(code: number): Background {
   switch (true) {
@@ -116,6 +116,23 @@ export function getAirQualityBackgroundFromValue(value: number): AirQualityBackg
       return 'air-quality-very-poor';
     default:
       return 'air-quality-moderate';
+  }
+}
+
+export function getUVIndexBackgroundFromValue(value: number): UVIndexBackground {
+  switch (true) {
+    case value < 3:
+      return 'uv-index-low';
+    case value >= 3 && value < 6:
+      return 'uv-index-moderate';
+    case value >= 6 && value < 8:
+      return 'uv-index-high';
+    case value >= 8 && value < 11:
+      return 'uv-index-very-high';
+    case value >= 11:
+      return 'uv-index-extreme';
+    default:
+      return 'uv-index-moderate';
   }
 }
 
