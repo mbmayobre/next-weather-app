@@ -1,6 +1,6 @@
 'use client'
 
-import { FunctionComponent, useState, useEffect, use } from "react";
+import { FunctionComponent, useState, useEffect } from "react";
 import { weather } from "../lib/definitions";
 import { MdCompress } from "react-icons/md";
 import { getPressureBackgroundFromValue } from "../utils/image-requests";
