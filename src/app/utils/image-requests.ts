@@ -1,4 +1,4 @@
-import { Background, WeatherIcon, PressureBackground, HumidityBackground } from './dictionary';
+import { Background, WeatherIcon, PressureBackground, HumidityBackground, AirQualityBackground } from './dictionary';
 
 export function getBackgroundFromCode(code: number): Background {
   switch (true) {
@@ -99,6 +99,23 @@ export function getHumidityBackgroundFromValue(value: number): HumidityBackgroun
       return 'humidity-very-high';
     default:
       return 'humidity-moderate';
+  }
+}
+
+export function getAirQualityBackgroundFromValue(value: number): AirQualityBackground {
+  switch (true) {
+    case value === 1:
+      return 'air-quality-good';
+    case value === 2:
+      return 'air-quality-fair';
+    case value === 3:
+      return 'air-quality-moderate';
+    case value === 4:
+      return 'air-quality-poor';
+    case value === 5:
+      return 'air-quality-very-poor';
+    default:
+      return 'air-quality-moderate';
   }
 }
 

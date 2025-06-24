@@ -1,14 +1,26 @@
 'use client'
 
-import { FunctionComponent } from "react";
+import { FunctionComponent, useState, useEffect } from "react";
 import { air_quality } from "../lib/definitions";
 import { PiWavesBold } from "react-icons/pi";
+import { getAirQualityBackgroundFromValue } from "../utils/image-requests";
+import { AirQualityBackground, airQualityClassMap } from "../utils/dictionary";
 
 interface AQIProps {
   data: air_quality;
 }
 
 export const AQI: FunctionComponent<AQIProps> = ({ data }) => {
+  const [bg, setBg] = useState<AirQualityBackground>("air-quality-moderate");
+
+  useEffect(() => {
+    if (data && data.list && data.list.length > 0) {
+      const aqiValue = data.list[0].main.aqi;
+      const background = getAirQualityBackgroundFromValue(aqiValue);
+      setBg(background);
+    }
+  }, [data]);
+
   const aqiLevel = (aqi: number) => {
     if (aqi === 1) return "Good";
     if (aqi === 2) return "Fair";
@@ -18,15 +30,15 @@ export const AQI: FunctionComponent<AQIProps> = ({ data }) => {
   };
 
   return (
-    <div className="flex flex-col bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white w-full h-[175px] rounded-2xl mt-4 p-4">
-      <div className="flex flex-row justify-start ml-2 mt-2 mb-2">
-        <PiWavesBold size={25} />
-        <p className="ml-3 text-sm font-semibold">Air Quality</p>
+    <div className={`flex flex-col ${airQualityClassMap[bg]} bg-contain bg-no-repeat bg-center bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white w-full h-[175px] rounded-2xl mt-4 p-4`}>
+      <div className="flex flex-row justify-center mt-4 mb-2">
+        <PiWavesBold size={20} />
+        <p className="ml-1 md:ml-3 text-sm font-semibold">Air Quality</p>
       </div>
-      <div className="flex flex-row justify-start items-center ml-2 h-full">
+      <div className="flex flex-row justify-center items-center h-full">
         <p className="text-2xl font-semibold">{data.list[0].main.aqi}</p>
       </div>
-      <div className="flex flex-row justify-between items-center ml-2 h-full">
+      <div className="flex flex-row justify-center items-center h-full">
         <p className="text-xs text-gray-800 dark:text-gray-400">{aqiLevel(data.list[0].main.aqi)} air quality</p>
       </div>
     </div>
