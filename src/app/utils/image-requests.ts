@@ -1,4 +1,4 @@
-import { Background, WeatherIcon, PressureBackground } from './dictionary';
+import { Background, WeatherIcon, PressureBackground, HumidityBackground } from './dictionary';
 
 export function getBackgroundFromCode(code: number): Background {
   switch (true) {
@@ -85,7 +85,7 @@ export function getIconFromCode(code: number): WeatherIcon {
   }
 }
 
-export function getHumidityBackgroundFromValue(value: number): string {
+export function getHumidityBackgroundFromValue(value: number): HumidityBackground {
   switch (true) {
     case value < 20:
       return 'humidity-very-low';
