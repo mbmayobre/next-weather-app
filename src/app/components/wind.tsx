@@ -20,8 +20,8 @@ export const Wind: FunctionComponent<WindProps> = ({ weather }) => {
       className="relative flex flex-col mr-4 bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white w-full h-[175px] rounded-2xl mt-4 p-4"
     >
       <div className="flex z-[2] flex-row justify-start ml-2 mt-2 mb-2">
-        <FaWind size={25} />
-        <p className="ml-3 font-semibold">Wind</p>
+        <FaWind size={20} />
+        <p className="ml-3 text-sm font-semibold">Wind</p>
       </div>
       <div className="flex z-[2] flex-row justify-start items-center ml-2 h-full">
         <p className="text-2xl font-semibold">{weather.current.wind_speed}mph</p>

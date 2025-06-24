@@ -16,8 +16,8 @@ export const Precipitation: FunctionComponent<PrecipitationProps> = ({ weather }
   return (
     <div className="flex flex-col bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white w-full h-[175px] rounded-2xl mt-4 mr-4 p-4">
       <div className="flex flex-row justify-start ml-2 mt-2 mb-2">
-        <GiHeavyRain size={25} className="font-bold" />
-        <p className="ml-3 font-semibold">Precipitation</p>
+        <GiHeavyRain size={20} className="font-bold" />
+        <p className="ml-3 text-sm font-semibold">Precipitation</p>
       </div>
       <div className="flex flex-row justify-start items-center ml-2 h-full">
         {!weather.daily[0].rain && <p className="text-2xl font-semibold my-auto">0.00in</p>}
