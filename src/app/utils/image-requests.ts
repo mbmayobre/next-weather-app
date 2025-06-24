@@ -121,15 +121,15 @@ export function getAirQualityBackgroundFromValue(value: number): AirQualityBackg
 
 export function getUVIndexBackgroundFromValue(value: number): UVIndexBackground {
   switch (true) {
-    case value < 3:
+    case value <= 2:
       return 'uv-index-low';
-    case value >= 3 && value < 6:
+    case value > 2 && value <= 5:
       return 'uv-index-moderate';
-    case value >= 6 && value < 8:
+    case value > 5 && value <= 7:
       return 'uv-index-high';
-    case value >= 8 && value < 11:
+    case value > 7 && value <= 10:
       return 'uv-index-very-high';
-    case value >= 11:
+    case value > 10:
       return 'uv-index-extreme';
     default:
       return 'uv-index-moderate';
