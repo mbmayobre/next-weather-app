@@ -37,10 +37,10 @@ export const UVI: FunctionComponent<UVIProps> = ({ weather }) => {
         <PiSunBold size={20} className="font-bold" />
         <p className="ml-3 text-sm font-semibold">UV Index</p>
       </div>
-      <div className="flex flex-row justify-start items-center ml-2 h-full">
+      <div className="flex flex-row justify-center items-center ml-2 h-full">
         <p className="text-2xl font-semibold">{uvi}</p>
       </div>
-      <div className="flex flex-row justify-between items-center ml-2 h-full">
+      <div className="flex flex-row justify-center items-center ml-2 mb-2 h-full">
         <p className="text-xs text-gray-800 dark:text-gray-400">{uviLevel(uvi)}</p>
       </div>
     </div>

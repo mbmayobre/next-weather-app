@@ -28,10 +28,10 @@ export const CurrentWeather: FunctionComponent<CurrentWeatherProps> = ({ weather
         <h2 className="text-xl font-semibold mb-5">{location?.name}, {location?.country}</h2>
         <p className="text-5xl font-semibold sm:text-6xl mb-5">{Math.round(weather.current.temp)}°F</p>
         <p className="text-lg">{weather.current.weather[0].description}</p>
-        <p>Feels like: {weather.current.feels_like}°F</p>
-        <p className="hidden sm:block">High: {weather.daily[0].temp.max}°F - Low: {weather.daily[0].temp.min}°F</p>
-        <p className="block sm:hidden">High: {weather.daily[0].temp.max}°F</p>
-        <p className="block sm:hidden">Low: {weather.daily[0].temp.min}°F</p>
+        <p>Feels like: {Math.round(weather.current.feels_like)}°F</p>
+        <p className="hidden sm:block">High: {Math.round(weather.daily[0].temp.max)}°F - Low: {Math.round(weather.daily[0].temp.min)}°F</p>
+        <p className="block sm:hidden">High: {Math.round(weather.daily[0].temp.max)}°F</p>
+        <p className="block sm:hidden">Low: {Math.round(weather.daily[0].temp.min)}°F</p>
       </div>
       <div className="flex items-center">
         <img
