@@ -34,8 +34,8 @@ export const UVI: FunctionComponent<UVIProps> = ({ weather }) => {
   return (
     <div className={`flex flex-col size-full bg-gray-200 ${uvIndexClassMap[bg]} bg-contain bg-no-repeat bg-center dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white rounded-2xl p-4 pb-8`}>
       <div className="flex flex-row justify-start ml-2 mt-2 mb-2">
-        <PiSunBold size={20} className="font-bold" />
-        <p className="ml-3 text-sm font-semibold">UV Index</p>
+        <PiSunBold size={20} className="font-bold my-auto" />
+        <p className="ml-3 text-sm lg:text-lg font-semibold">UV Index</p>
       </div>
       <div className="flex flex-row justify-center items-center ml-2 h-full">
         <p className="text-2xl font-semibold">{uvi}</p>

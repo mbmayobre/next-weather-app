@@ -27,8 +27,8 @@ export const Pressure: FunctionComponent<PressureProps> = ({ weather }) => {
   return (
     <div className={`flex flex-col size-full justify-center ${pressureClassMap[bg]} bg-contain bg-no-repeat [background-position:50%_10px] bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white rounded-2xl p-4 pt-8`}>
       <div className="flex flex-row justify-center mt-4 mb-2">
-        <MdCompress size={25} className="font-bold" />
-        <p className="ml-3 text-sm font-semibold">Pressure</p>
+        <MdCompress size={25} className="font-bold my-auto" />
+        <p className="ml-3 text-sm lg:text-lg font-semibold">Pressure</p>
       </div>
       <div className="flex flex-row justify-center items-center h-full">
         <p className="text-3xl font-semibold">{pressure}</p>
