@@ -174,3 +174,43 @@ export function getIconFromIcon(icon: string, code: number): WeatherIcon {
   // for everything else, just fall back to the existing mapping
   return getIconFromCode(code);
 }
+
+/**
+ * @param nowSec   – the API’s current time, in UNIX seconds (weather.current.dt)
+ * @param sunrise  – API sunrise time, in UNIX seconds
+ * @param sunset   – API sunset time, in UNIX seconds
+ * @returns        – icon index 0…15
+ */
+export function getSunriseIconIndex(
+  nowSec: number,
+  sunrise: number,
+  sunset: number
+): number {
+  const nowMs  = nowSec  * 1_000;
+  const riseMs = sunrise * 1_000;
+  const setMs  = sunset  * 1_000;
+  const H      = 3_600_000;  // ms in 1 hour
+
+  // 0: night (≤ 2h before sunrise)
+  if (nowMs <= riseMs - 2 * H) return 0;
+  // 1: 1–2h before sunrise
+  if (nowMs <= riseMs -     H) return 1;
+  // 2: up to sunrise
+  if (nowMs <= riseMs)          return 2;
+
+  // 3–13: daytime split into 11 slots
+  if (nowMs < setMs) {
+    const daylight = setMs - riseMs;
+    const elapsed  = nowMs  - riseMs;
+    const slot     = Math.ceil((elapsed / daylight) * 11);
+    return 2 + slot;  // maps slot 1…11 → icon 3…13
+  }
+
+  // 14: at sunset
+  if (nowMs <= setMs)      return 14;
+  // 15: up to 1h after sunset
+  if (nowMs <= setMs + H)  return 15;
+
+  // otherwise, back to night
+  return 0;
+}

@@ -1,17 +1,23 @@
 'use client'
 
-import { FunctionComponent } from "react";
+import { FunctionComponent, useMemo } from "react";
 import { weather } from "../lib/definitions";
 import { PiSunHorizonBold } from "react-icons/pi";
 import { TbSunrise, TbSunset } from "react-icons/tb";
+import { getSunriseIconIndex } from "../utils/image-requests";
 
 interface SunriseAndSunsetProps {
   weather: weather;
 }
 
 export const SunriseAndSunset: FunctionComponent<SunriseAndSunsetProps> = ({ weather }) => {
-  const { sunrise, sunset } = weather.current;
+  const { sunrise, sunset, dt } = weather.current;
   const tzName = weather.timezone;
+
+  const idx = useMemo(
+    () => getSunriseIconIndex(dt, sunrise, sunset),
+    [dt, sunrise, sunset]
+  );
 
   const formatTime = (
     unixSec: number,
@@ -26,13 +32,13 @@ export const SunriseAndSunset: FunctionComponent<SunriseAndSunsetProps> = ({ wea
   }
 
   return (
-    <div className="flex flex-col bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white w-full h-[175px] rounded-2xl mt-4 mr-4 p-4">
+    <div className={`flex flex-col bg-sunrise-${idx} bg-cover bg-no-repeat bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white w-full h-[175px] rounded-2xl mt-4 mr-4 p-4`}>
       <div className="flex flex-row justify-start ml-2 mt-2 mb-2">
         <PiSunHorizonBold size={20} className="font-bold" />
         <p className="ml-3 text-sm font-semibold">Sunrise & Sunset</p>
       </div>
-      <div className="flex flex-col justify-center items-start ml-2 h-full">
-        <p className="flex flex-nowrap text-sm mb-3"><TbSunrise size={20} className="mr-2" />{formatTime(sunrise, tzName)}</p>
+      <div className="flex flex-col justify-center items-center h-full mt-8">
+        <p className="flex flex-nowrap text-sm mb-4"><TbSunrise size={20} className="mr-2" />{formatTime(sunrise, tzName)}</p>
         <p className="flex flex-nowrap text-sm"><TbSunset size={20} className="mr-2" />{formatTime(sunset, tzName)}</p>
       </div>
     </div>
