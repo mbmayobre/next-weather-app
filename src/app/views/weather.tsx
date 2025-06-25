@@ -116,10 +116,8 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
     } catch (error) {
       console.error(error);
       if (error instanceof Error) {
-        // alert(error.message);
         setError(error.message);
       } else {
-        // alert("An unknown error occurred");
         setError("An unknown error occurred");
       }
     } finally {
