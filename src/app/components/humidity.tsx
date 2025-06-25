@@ -24,7 +24,7 @@ export const Humidity: FunctionComponent<HumidityProps> = ({ weather }) => {
   }, [weather]);
 
   return (
-    <div className={`flex flex-col ${humidityClassMap[bg]} bg-cover bg-gray-200 opacity-90 dark:opacity-90 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white w-full h-[175px] rounded-2xl mt-4 p-4`}>
+    <div className={`flex flex-col size-full ${humidityClassMap[bg]} bg-cover bg-gray-200 opacity-90 dark:opacity-90 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white rounded-2xl p-4`}>
       <div className="flex flex-row justify-start ml-2 mt-2 mb-2">
         <GiWaterDrop size={20} className="font-bold" />
         <p className="ml-3 text-sm font-semibold">Humidity</p>

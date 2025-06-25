@@ -30,7 +30,7 @@ export const AQI: FunctionComponent<AQIProps> = ({ data }) => {
   };
 
   return (
-    <div className={`flex flex-col ${airQualityClassMap[bg]} bg-contain bg-no-repeat [background-position:50%_10px] bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white w-full h-[175px] rounded-2xl mt-4 p-4 pt-8`}>
+    <div className={`flex flex-col size-full ${airQualityClassMap[bg]} bg-contain bg-no-repeat [background-position:50%_10px] bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white rounded-2xl p-4 pt-8`}>
       <div className="flex flex-row justify-center mt-4 mb-2">
         <PiWavesBold size={20} />
         <p className="ml-2 md:ml-3 text-sm font-semibold">Air Quality</p>

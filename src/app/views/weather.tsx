@@ -215,21 +215,37 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
             )}
             <HourlyWeather weather={weather} />
             <DailyWeather weather={weather} />
-            <div className="flex flex-row justify-center w-full">
-              <Precipitation weather={weather} />
-              <Humidity weather={weather} />
+            <div className="flex flex-row justify-center w-full mt-4">
+              <div className="w-1/2 aspect-square mr-2">
+                <Precipitation weather={weather} />
+              </div>
+              <div className="w-1/2 aspect-square ml-2">
+                <Humidity weather={weather} />
+              </div>
             </div>
-            <div className="flex flex-row justify-center w-full">
-              <Wind weather={weather} />
-              <Pressure weather={weather} />
+            <div className="flex flex-row justify-center w-full mt-4">
+              <div className="w-1/2 aspect-square mr-2">
+                <Wind weather={weather} />
+              </div>
+              <div className="w-1/2 aspect-square ml-2">
+                <Pressure weather={weather} />
+              </div>
             </div>
-            <div className="flex flex-row justify-center w-full">
-              <SunriseAndSunset weather={weather} />
-              <Visibility weather={weather} />
+            <div className="flex flex-row justify-center w-full mt-4">
+              <div className="w-1/2 aspect-square mr-2">
+                <SunriseAndSunset weather={weather} />
+              </div>
+              <div className="w-1/2 aspect-square ml-2">
+                <Visibility weather={weather} />
+              </div>
             </div>
-            <div className="flex flex-row justify-center w-full">
-              <UVI weather={weather} />
-              <AQI data={aqi} />
+            <div className="flex flex-row justify-center w-full mt-4">
+              <div className="w-1/2 aspect-square mr-2">
+                <UVI weather={weather} />
+              </div>
+              <div className="w-1/2 aspect-square ml-2">
+                <AQI data={aqi} />
+              </div>
             </div>
           </div>          
         </div>

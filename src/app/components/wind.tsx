@@ -17,7 +17,7 @@ export const Wind: FunctionComponent<WindProps> = ({ weather }) => {
 
   return (
     <div 
-      className="relative flex flex-col mr-4 bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white w-full h-[175px] rounded-2xl mt-4 p-4"
+      className="relative flex flex-col size-full mr-4 bg-gray-200 dark:bg-opacity-40 bg-opacity-40 text-black dark:bg-black dark:text-white rounded-2xl p-4"
     >
       <div className="flex z-[2] flex-row justify-start ml-2 mt-2 mb-2">
         <FaWind size={20} />
