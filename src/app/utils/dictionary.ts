@@ -63,6 +63,24 @@ export type UVIndexBackground =
   | 'uv-index-very-high'
   | 'uv-index-extreme';
 
+export type SunriseIcon =
+  | 'sunrise-0'
+  | 'sunrise-1'
+  | 'sunrise-2'
+  | 'sunrise-3'
+  | 'sunrise-4'
+  | 'sunrise-5'
+  | 'sunrise-6'
+  | 'sunrise-7'
+  | 'sunrise-8'
+  | 'sunrise-9'
+  | 'sunrise-10'
+  | 'sunrise-11'
+  | 'sunrise-12'
+  | 'sunrise-13'
+  | 'sunrise-14'
+  | 'sunrise-15';
+
 export const bgClassMap: Record<Background, string> = {
   'thunderstorm':        'bg-thunderstorm',
   'light-rain':          'bg-light-rain',
@@ -107,4 +125,23 @@ export const uvIndexClassMap: Record<UVIndexBackground, string> = {
   'uv-index-high':      'bg-uv-index-high',
   'uv-index-very-high': 'bg-uv-index-very-high',
   'uv-index-extreme':   'bg-uv-index-extreme',
+};
+
+export const sunriseClassMap: Record<SunriseIcon, string> = {
+  'sunrise-0':  'bg-sunrise-0',
+  'sunrise-1':  'bg-sunrise-1',
+  'sunrise-2':  'bg-sunrise-2',
+  'sunrise-3':  'bg-sunrise-3',
+  'sunrise-4':  'bg-sunrise-4',
+  'sunrise-5':  'bg-sunrise-5',
+  'sunrise-6':  'bg-sunrise-6',
+  'sunrise-7':  'bg-sunrise-7',
+  'sunrise-8':  'bg-sunrise-8',
+  'sunrise-9':  'bg-sunrise-9', 
+  'sunrise-10': 'bg-sunrise-10',
+  'sunrise-11': 'bg-sunrise-11',
+  'sunrise-12': 'bg-sunrise-12',
+  'sunrise-13': 'bg-sunrise-13',
+  'sunrise-14': 'bg-sunrise-14',
+  'sunrise-15': 'bg-sunrise-15',
 };
