@@ -38,7 +38,7 @@ export const SunriseAndSunset: FunctionComponent<SunriseAndSunsetProps> = ({ wea
         <p className="ml-3 text-sm font-semibold">Sunrise & Sunset</p>
       </div>
       <div className="flex flex-col justify-center items-center h-full mt-8">
-        <p className="flex flex-nowrap text-sm mb-4"><TbSunrise size={20} className="mr-2" />{formatTime(sunrise, tzName)}</p>
+        <p className="flex flex-nowrap text-sm"><TbSunrise size={20} className="mr-2" />{formatTime(sunrise, tzName)}</p>
         <p className="flex flex-nowrap text-sm"><TbSunset size={20} className="mr-2" />{formatTime(sunset, tzName)}</p>
       </div>
     </div>
