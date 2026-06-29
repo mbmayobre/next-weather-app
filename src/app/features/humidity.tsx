@@ -3,8 +3,8 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import { weather } from "../lib/definitions";
 import { GiWaterDrop } from "react-icons/gi";
-import { getHumidityBackgroundFromValue } from "../utils/image-requests";
-import { humidityClassMap, HumidityBackground } from "../utils/dictionary";
+import { getHumidityBackgroundFromValue } from "../service/image-requests";
+import { humidityClassMap, HumidityBackground } from "../service/dictionary";
 
 interface HumidityProps {
   weather: weather;

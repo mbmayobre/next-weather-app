@@ -15,8 +15,8 @@ import SunriseAndSunset from "../features/sunrise-sunset";
 import Visibility from "../features/visibility";
 import UVI from "../features/uv-index";
 import AQI from "../features/air-quality";
-import { type Background } from "../utils/dictionary";
-import { getBackgroundFromIcon } from "../utils/image-requests";
+import { type Background } from "../service/dictionary";
+import { getBackgroundFromIcon } from "../service/image-requests";
 import Alerts from "../features/alerts";
 
 interface WeatherProps {

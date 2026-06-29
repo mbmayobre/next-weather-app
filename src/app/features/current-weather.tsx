@@ -2,8 +2,8 @@
 
 import { FunctionComponent, useEffect, useState } from "react";
 import { weather, location } from "../lib/definitions";
-import { getIconFromIcon } from "../utils/image-requests";
-import { type WeatherIcon } from "../utils/dictionary";
+import { getIconFromIcon } from "../service/image-requests";
+import { type WeatherIcon } from "../service/dictionary";
 
 interface CurrentWeatherProps {
   weather: weather;

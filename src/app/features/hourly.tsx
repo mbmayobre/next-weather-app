@@ -3,7 +3,7 @@
 import { FunctionComponent } from "react";
 import { weather } from "../lib/definitions";
 import { TbClockHour4 } from "react-icons/tb";
-import { getIconFromIcon } from "../utils/image-requests";
+import { getIconFromIcon } from "../service/image-requests";
 
 interface HourlyProps {
   weather: weather;
