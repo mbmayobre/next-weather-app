@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Weather from "./views/weather";
+import Weather from "./weather/weather";
 import type { Background } from "./utils/dictionary";
 import { bgClassMap } from './utils/dictionary';
 
