@@ -18,24 +18,28 @@ import AQI from "../features/air-quality";
 import { type Background } from "../service/dictionary";
 import { getBackgroundFromIcon } from "../service/image-requests";
 import Alerts from "../features/alerts";
+import { useLoadingCounter } from "../hooks/loading-counter";
+import LoadingSpinner from "../components/loading-spinner";
 
 interface WeatherProps {
   onBackgroundChange: (bg: Background) => void
 }
 
 export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange }) => {
+  const { isLoading, start, stop } = useLoadingCounter();
   const [weather, setWeather] = useState<weather>();
   const [aqi, setAqi] = useState<air_quality>();
   const [latitude, setLatitude] = useState<string>("");
   const [longitude, setLongitude] = useState<string>("");
   const [location, setLocation] = useState<location>();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch weather data
   const fetchWeather = useCallback(async () => {
     if (!latitude || !longitude) return;
-    setIsLoading(true);
+    // setIsLoading(true);
+    start();
     setError(null);
     try {
       const res = await fetch(
@@ -51,14 +55,16 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       console.error(error);
       setError("Unable to fetch weather data");
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
+      stop();
     }
   }, [latitude, longitude]);
 
   // Fetch air pollution data
   const fetchAirQuality = useCallback(async () => {
     if (!latitude || !longitude) return;
-    setIsLoading(true);
+    // setIsLoading(true);
+    start();
     setError(null);
     try {
       const res = await fetch(
@@ -74,13 +80,15 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       console.error(error);
       setError("Unable to fetch air quality data");
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
+      stop();
     }
   }, [latitude, longitude]);
 
   // Fetch location data (Geocoding API)
   const fetchLocation = useCallback(async (city: string) => {
-    setIsLoading(true);
+    // setIsLoading(true);
+    start();
     setError(null);
     
     try {
@@ -116,13 +124,15 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
         setError("An unknown error occurred");
       }
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
+      stop();
     }
   }, []);
 
   const fetchLocationName = useCallback(async () => {
     if (!latitude || !longitude) return;
-    setIsLoading(true);
+    // setIsLoading(true);
+    start();
     setError(null);
 
     try {
@@ -138,7 +148,8 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       console.error(error);
       setError("Unable to fetch location name");
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
+      stop();
     }
   }, [latitude, longitude]);
 
@@ -163,7 +174,8 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       return;
     }
 
-    setIsLoading(true);
+    // setIsLoading(true);
+    start();
     setError("");
 
     try {
@@ -177,7 +189,8 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       console.error("Error fetching location:", error);
       setError("Unable to retrieve your location. Please enable location services in your browser.");
     } finally {
-      setIsLoading(false);
+      // setIsLoading(false);
+      stop();
     }
   }, []);
 
@@ -192,7 +205,9 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       {/* Error Message */}
       {error && <p className="text-red-500 mt-16">{error}</p>}
 
-      {weather && aqi && location && !error && (
+      {isLoading && <LoadingSpinner />}
+
+      {weather && aqi && location && !error && !isLoading && (
         <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-start w-full">
           <div className="flex justify-center w-full mt-10 md:fixed md:w-1/2 lg:w-2/5 h-auto lg:h-[60vh] md:p-4">
             <CurrentWeather weather={weather} location={location} />
