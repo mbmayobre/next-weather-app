@@ -4,7 +4,7 @@ import { FunctionComponent, useMemo } from "react";
 import { weather } from "../lib/definitions";
 import { PiSunHorizonBold } from "react-icons/pi";
 import { TbSunrise, TbSunset } from "react-icons/tb";
-import { getSunriseIconIndex } from "../utils/image-requests";
+import { getSunriseIconIndex } from "../service/image-requests";
 
 interface SunriseAndSunsetProps {
   weather: weather;

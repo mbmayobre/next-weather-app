@@ -3,8 +3,8 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import { weather } from "../lib/definitions";
 import { PiSunBold } from "react-icons/pi";
-import { getUVIndexBackgroundFromValue } from "../utils/image-requests";
-import { UVIndexBackground, uvIndexClassMap } from "../utils/dictionary";
+import { getUVIndexBackgroundFromValue } from "../service/image-requests";
+import { UVIndexBackground, uvIndexClassMap } from "../service/dictionary";
 
 interface UVIProps {
   weather: weather;

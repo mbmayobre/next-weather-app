@@ -3,7 +3,7 @@
 import { FunctionComponent } from "react";
 import { weather } from "../lib/definitions";
 import { MdOutlineCalendarToday } from "react-icons/md";
-import { getIconFromIcon } from "../utils/image-requests";
+import { getIconFromIcon } from "../service/image-requests";
 
 interface DailyWeatherProps {
   weather: weather;

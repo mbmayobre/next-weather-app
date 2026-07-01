@@ -3,8 +3,8 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import { weather } from "../lib/definitions";
 import { MdCompress } from "react-icons/md";
-import { getPressureBackgroundFromValue } from "../utils/image-requests";
-import { pressureClassMap, PressureBackground } from "../utils/dictionary";
+import { getPressureBackgroundFromValue } from "../service/image-requests";
+import { pressureClassMap, PressureBackground } from "../service/dictionary";
 
 interface PressureProps {
   weather: weather;

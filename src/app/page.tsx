@@ -1,9 +1,9 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Weather from "./views/weather";
-import type { Background } from "./utils/dictionary";
-import { bgClassMap } from './utils/dictionary';
+import Weather from "./weather/weather";
+import type { Background } from "./service/dictionary";
+import { bgClassMap } from './service/dictionary';
 
 export default function Home() {
   const [bg, setBg] = useState<Background>('home')

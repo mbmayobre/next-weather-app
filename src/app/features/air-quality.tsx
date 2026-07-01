@@ -3,8 +3,8 @@
 import { FunctionComponent, useState, useEffect } from "react";
 import { air_quality } from "../lib/definitions";
 import { PiWavesBold } from "react-icons/pi";
-import { getAirQualityBackgroundFromValue } from "../utils/image-requests";
-import { AirQualityBackground, airQualityClassMap } from "../utils/dictionary";
+import { getAirQualityBackgroundFromValue } from "../service/image-requests";
+import { AirQualityBackground, airQualityClassMap } from "../service/dictionary";
 
 interface AQIProps {
   data: air_quality;

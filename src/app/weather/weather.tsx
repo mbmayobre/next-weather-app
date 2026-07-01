@@ -3,21 +3,21 @@
 import { FunctionComponent, useEffect, useState, useCallback } from "react";
 import { weather, location, air_quality } from "../lib/definitions";
 import SearchBar from "../components/searchbar";
-import CurrentWeather from "../components/current-weather";
+import CurrentWeather from "../features/current-weather";
 import DarkModeToggle from "../components/dark-mode-toggle";
-import HourlyWeather from "../components/hourly";
-import DailyWeather from "../components/daily";
-import Precipitation from "../components/precipitation";
-import Humidity from "../components/humidity";
-import Wind from "../components/wind";
-import Pressure from "../components/pressure";
-import SunriseAndSunset from "../components/sunrise-sunset";
-import Visibility from "../components/visibility";
-import UVI from "../components/uv-index";
-import AQI from "../components/air-quality";
-import { type Background } from "../utils/dictionary";
-import { getBackgroundFromIcon } from "../utils/image-requests";
-import Alerts from "../components/alerts";
+import HourlyWeather from "../features/hourly";
+import DailyWeather from "../features/daily";
+import Precipitation from "../features/precipitation";
+import Humidity from "../features/humidity";
+import Wind from "../features/wind";
+import Pressure from "../features/pressure";
+import SunriseAndSunset from "../features/sunrise-sunset";
+import Visibility from "../features/visibility";
+import UVI from "../features/uv-index";
+import AQI from "../features/air-quality";
+import { type Background } from "../service/dictionary";
+import { getBackgroundFromIcon } from "../service/image-requests";
+import Alerts from "../features/alerts";
 
 interface WeatherProps {
   onBackgroundChange: (bg: Background) => void
