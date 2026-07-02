@@ -37,6 +37,7 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
 
   // Fetch weather data
   const fetchWeather = useCallback(async () => {
+    console.log("fetchWeather")
     if (!latitude || !longitude) return;
     // setIsLoading(true);
     start();
@@ -50,7 +51,6 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
 
       const data = await res.json();
       setWeather(data);
-      console.log(data);
     } catch (error) {
       console.error(error);
       setError("Unable to fetch weather data");
@@ -62,6 +62,7 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
 
   // Fetch air pollution data
   const fetchAirQuality = useCallback(async () => {
+    console.log("fetchAirQuality")
     if (!latitude || !longitude) return;
     // setIsLoading(true);
     start();
@@ -75,7 +76,6 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
 
       const data = await res.json();
       setAqi(data);
-      console.log(data);
     } catch (error) {
       console.error(error);
       setError("Unable to fetch air quality data");
@@ -87,6 +87,7 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
 
   // Fetch location data (Geocoding API)
   const fetchLocation = useCallback(async (city: string) => {
+    console.log("fetchLocation")
     // setIsLoading(true);
     start();
     setError(null);
@@ -130,6 +131,7 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
   }, []);
 
   const fetchLocationName = useCallback(async () => {
+    console.log("fetchLocationName")
     if (!latitude || !longitude) return;
     // setIsLoading(true);
     start();
@@ -169,6 +171,7 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
   }, [weather, latitude, longitude, onBackgroundChange]);
 
   const handleGetCurrentLocation = useCallback(async () => {
+    console.log("handleGetCurrentLocation")
     if (!navigator.geolocation) {
       setError("Geolocation is not supported by your browser.");
       return;
