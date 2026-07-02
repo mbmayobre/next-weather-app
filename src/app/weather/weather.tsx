@@ -197,7 +197,7 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
   return (
     <div className="relative w-full lg:w-5/6 md:columns-2 flex justify-center p-4">
       {/* Search Bar */}
-      <div className="fixed top-0 w-full mx-auto flex justify-center p-4 z-10">
+      <div className="fixed top-0 w-full mx-auto flex justify-center p-4 z-20">
         <SearchBar onSearch={fetchLocation} handleCurrentLocation={handleGetCurrentLocation} loading={isLoading} />
         <DarkModeToggle />
       </div>
