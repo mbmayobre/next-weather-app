@@ -15,7 +15,6 @@ export const SearchBar: FunctionComponent<SearchBarProps> = ({ onSearch, handleC
   const [city, setCity] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
-    console.log(city)
     e.preventDefault();
     if (city.trim() !== "") {
       onSearch(city);
