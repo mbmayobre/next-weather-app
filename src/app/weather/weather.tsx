@@ -29,17 +29,12 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
   const { isLoading, start, stop } = useLoadingCounter();
   const [weather, setWeather] = useState<weather>();
   const [aqi, setAqi] = useState<air_quality>();
-  // const [latitude, setLatitude] = useState<string>("");
-  // const [longitude, setLongitude] = useState<string>("");
   const [location, setLocation] = useState<location>();
-  // const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch weather data
   const fetchWeather = async (latitude: string, longitude: string) => {
-    console.log("fetchWeather")
-    if (!latitude || !longitude) return;
-    // setIsLoading(true);
+    if (!latitude || !longitude) return
     start();
     setError(null);
     try {
@@ -55,16 +50,13 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       console.error(error);
       setError("Unable to fetch weather data");
     } finally {
-      // setIsLoading(false);
       stop();
     }
   };
 
   // Fetch air pollution data
   const fetchAirQuality = async (latitude: string, longitude: string) => {
-    console.log("fetchAirQuality")
-    if (!latitude || !longitude) return;
-    // setIsLoading(true);
+    if (!latitude || !longitude) return
     start();
     setError(null);
     try {
@@ -80,18 +72,15 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       console.error(error);
       setError("Unable to fetch air quality data");
     } finally {
-      // setIsLoading(false);
       stop();
     }
   };
 
+  // Fetch location name
   const fetchLocationName = async (latitude: string, longitude: string) => {
-    console.log("fetchLocationName")
-    if (!latitude || !longitude) return;
-    // setIsLoading(true);
+    if (!latitude || !longitude) return
     start();
     setError(null);
-
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/reverse?lat=${latitude}&lon=${longitude}&limit=5&&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
@@ -105,7 +94,6 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       console.error(error);
       setError("Unable to fetch location name");
     } finally {
-      // setIsLoading(false);
       stop();
     }
   };
@@ -118,8 +106,6 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
 
   // Fetch location data (Geocoding API)
   const fetchLocation = useCallback(async (city: string) => {
-    console.log("fetchLocation")
-    // setIsLoading(true);
     start();
     setError(null);
     
@@ -145,13 +131,9 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       let longitude: string;
 
       if (Array.isArray(data)) {
-        // setLatitude(data[0].lat);
-        // setLongitude(data[0].lon);
         latitude = data[0].lat;
         longitude = data[0].lon;
       } else {
-        // setLatitude(data.lat);
-        // setLongitude(data.lon);
         latitude = data.lat;
         longitude = data.lon;
       }
@@ -165,19 +147,16 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
         setError("An unknown error occurred");
       }
     } finally {
-      // setIsLoading(false);
       stop();
     }
   }, []);
 
   const handleGetCurrentLocation = useCallback(async () => {
-    console.log("handleGetCurrentLocation")
     if (!navigator.geolocation) {
       setError("Geolocation is not supported by your browser.");
       return;
     }
 
-    // setIsLoading(true);
     start();
     setError("");
 
@@ -186,8 +165,6 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
         navigator.geolocation.getCurrentPosition(resolve, reject);
       });
 
-      // setLatitude(position.coords.latitude.toString());
-      // setLongitude(position.coords.longitude.toString());
       const latitude = position.coords.latitude.toString();
       const longitude = position.coords.longitude.toString();
 
@@ -196,18 +173,9 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       console.error("Error fetching location:", error);
       setError("Unable to retrieve your location. Please enable location services in your browser.");
     } finally {
-      // setIsLoading(false);
       stop();
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (!!latitude && !!longitude) {
-  //     fetchWeather();
-  //     fetchAirQuality();
-  //     fetchLocationName();
-  //   }
-  // }, [latitude, longitude]);
 
   useEffect(() => {
     if (weather) {
