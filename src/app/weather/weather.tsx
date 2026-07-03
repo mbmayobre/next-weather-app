@@ -29,14 +29,14 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
   const { isLoading, start, stop } = useLoadingCounter();
   const [weather, setWeather] = useState<weather>();
   const [aqi, setAqi] = useState<air_quality>();
-  const [latitude, setLatitude] = useState<string>("");
-  const [longitude, setLongitude] = useState<string>("");
+  // const [latitude, setLatitude] = useState<string>("");
+  // const [longitude, setLongitude] = useState<string>("");
   const [location, setLocation] = useState<location>();
   // const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch weather data
-  const fetchWeather = useCallback(async () => {
+  const fetchWeather = async (latitude: string, longitude: string) => {
     console.log("fetchWeather")
     if (!latitude || !longitude) return;
     // setIsLoading(true);
@@ -58,10 +58,10 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       // setIsLoading(false);
       stop();
     }
-  }, [latitude, longitude]);
+  };
 
   // Fetch air pollution data
-  const fetchAirQuality = useCallback(async () => {
+  const fetchAirQuality = async (latitude: string, longitude: string) => {
     console.log("fetchAirQuality")
     if (!latitude || !longitude) return;
     // setIsLoading(true);
@@ -83,7 +83,38 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       // setIsLoading(false);
       stop();
     }
-  }, [latitude, longitude]);
+  };
+
+  const fetchLocationName = async (latitude: string, longitude: string) => {
+    console.log("fetchLocationName")
+    if (!latitude || !longitude) return;
+    // setIsLoading(true);
+    start();
+    setError(null);
+
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/reverse?lat=${latitude}&lon=${longitude}&limit=5&&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+      );
+
+      if (!res.ok) throw new Error("Failed to fetch location name");
+
+      const data = await res.json();
+      setLocation(data[0]);
+    } catch (error) {
+      console.error(error);
+      setError("Unable to fetch location name");
+    } finally {
+      // setIsLoading(false);
+      stop();
+    }
+  };
+
+  const handleFetchWeatherData = (latitude: string, longitude: string) => {
+    fetchWeather(latitude, longitude);
+    fetchAirQuality(latitude, longitude);
+    fetchLocationName(latitude, longitude);
+  };
 
   // Fetch location data (Geocoding API)
   const fetchLocation = useCallback(async (city: string) => {
@@ -110,13 +141,22 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
         throw new Error("No location found");
       }
 
+      let latitude: string;
+      let longitude: string;
+
       if (Array.isArray(data)) {
-        setLatitude(data[0].lat);
-        setLongitude(data[0].lon);
+        // setLatitude(data[0].lat);
+        // setLongitude(data[0].lon);
+        latitude = data[0].lat;
+        longitude = data[0].lon;
       } else {
-        setLatitude(data.lat);
-        setLongitude(data.lon);
+        // setLatitude(data.lat);
+        // setLongitude(data.lon);
+        latitude = data.lat;
+        longitude = data.lon;
       }
+
+      handleFetchWeatherData(latitude, longitude);
     } catch (error) {
       console.error(error);
       if (error instanceof Error) {
@@ -129,46 +169,6 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       stop();
     }
   }, []);
-
-  const fetchLocationName = useCallback(async () => {
-    console.log("fetchLocationName")
-    if (!latitude || !longitude) return;
-    // setIsLoading(true);
-    start();
-    setError(null);
-
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/reverse?lat=${latitude}&lon=${longitude}&limit=5&&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
-      );
-
-      if (!res.ok) throw new Error("Failed to fetch location name");
-
-      const data = await res.json();
-      setLocation(data[0]);
-    } catch (error) {
-      console.error(error);
-      setError("Unable to fetch location name");
-    } finally {
-      // setIsLoading(false);
-      stop();
-    }
-  }, [latitude, longitude]);
-
-  useEffect(() => {
-    if (!!latitude && !!longitude) {
-      fetchWeather();
-      fetchAirQuality();
-      fetchLocationName();
-    }
-  }, [latitude, longitude]);
-
-  useEffect(() => {
-    if (weather) {
-      const bg = getBackgroundFromIcon(weather.current.weather[0].icon, weather.current.weather[0].id);
-      onBackgroundChange(bg);
-    }
-  }, [weather, latitude, longitude, onBackgroundChange]);
 
   const handleGetCurrentLocation = useCallback(async () => {
     console.log("handleGetCurrentLocation")
@@ -186,8 +186,12 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
         navigator.geolocation.getCurrentPosition(resolve, reject);
       });
 
-      setLatitude(position.coords.latitude.toString());
-      setLongitude(position.coords.longitude.toString());
+      // setLatitude(position.coords.latitude.toString());
+      // setLongitude(position.coords.longitude.toString());
+      const latitude = position.coords.latitude.toString();
+      const longitude = position.coords.longitude.toString();
+
+      handleFetchWeatherData(latitude, longitude);
     } catch (error) {
       console.error("Error fetching location:", error);
       setError("Unable to retrieve your location. Please enable location services in your browser.");
@@ -196,6 +200,21 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
       stop();
     }
   }, []);
+
+  // useEffect(() => {
+  //   if (!!latitude && !!longitude) {
+  //     fetchWeather();
+  //     fetchAirQuality();
+  //     fetchLocationName();
+  //   }
+  // }, [latitude, longitude]);
+
+  useEffect(() => {
+    if (weather) {
+      const bg = getBackgroundFromIcon(weather.current.weather[0].icon, weather.current.weather[0].id);
+      onBackgroundChange(bg);
+    }
+  }, [weather, onBackgroundChange]);
 
   return (
     <div className="relative w-full lg:w-5/6 md:columns-2 flex justify-center p-4">
