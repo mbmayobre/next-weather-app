@@ -18,29 +18,24 @@ import AQI from "../features/air-quality";
 import { type Background } from "../service/dictionary";
 import { getBackgroundFromIcon } from "../service/image-requests";
 import Alerts from "../features/alerts";
+import { useLoadingCounter } from "../hooks/loading-counter";
+import LoadingSpinner from "../components/loading-spinner";
 
 interface WeatherProps {
   onBackgroundChange: (bg: Background) => void
 }
 
 export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange }) => {
+  const { isLoading, start, stop } = useLoadingCounter();
   const [weather, setWeather] = useState<weather>();
   const [aqi, setAqi] = useState<air_quality>();
-  const [latitude, setLatitude] = useState<string>("");
-  const [longitude, setLongitude] = useState<string>("");
   const [location, setLocation] = useState<location>();
-  const [loading, setLoading] = useState<boolean>(false);
-  const [weatherLoading, setWeatherLoading] = useState<boolean>(false);
-  const [aqiLoading, setAqiLoading] = useState<boolean>(false);
-  const [locationLoading, setLocationLoading] = useState<boolean>(false);
-  const [locationNameLoading, setLocationNameLoading] = useState<boolean>(false);
-  const [currentLocationLoading, setCurrentLocationLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
 
   // Fetch weather data
-  const fetchWeather = useCallback(async () => {
-    if (!latitude || !longitude) return;
-    setWeatherLoading(true);
+  const fetchWeather = async (latitude: string, longitude: string) => {
+    if (!latitude || !longitude) return
+    start();
     setError(null);
     try {
       const res = await fetch(
@@ -51,19 +46,18 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
 
       const data = await res.json();
       setWeather(data);
-      console.log(data);
     } catch (error) {
       console.error(error);
       setError("Unable to fetch weather data");
     } finally {
-      setWeatherLoading(false);
+      stop();
     }
-  }, [latitude, longitude]);
+  };
 
   // Fetch air pollution data
-  const fetchAirQuality = useCallback(async () => {
-    if (!latitude || !longitude) return;
-    setAqiLoading(true);
+  const fetchAirQuality = async (latitude: string, longitude: string) => {
+    if (!latitude || !longitude) return
+    start();
     setError(null);
     try {
       const res = await fetch(
@@ -74,18 +68,45 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
 
       const data = await res.json();
       setAqi(data);
-      console.log(data);
     } catch (error) {
       console.error(error);
       setError("Unable to fetch air quality data");
     } finally {
-      setAqiLoading(false);
+      stop();
     }
-  }, [latitude, longitude]);
+  };
+
+  // Fetch location name
+  const fetchLocationName = async (latitude: string, longitude: string) => {
+    if (!latitude || !longitude) return
+    start();
+    setError(null);
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/reverse?lat=${latitude}&lon=${longitude}&limit=5&&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+      );
+
+      if (!res.ok) throw new Error("Failed to fetch location name");
+
+      const data = await res.json();
+      setLocation(data[0]);
+    } catch (error) {
+      console.error(error);
+      setError("Unable to fetch location name");
+    } finally {
+      stop();
+    }
+  };
+
+  const handleFetchWeatherData = (latitude: string, longitude: string) => {
+    fetchWeather(latitude, longitude);
+    fetchAirQuality(latitude, longitude);
+    fetchLocationName(latitude, longitude);
+  };
 
   // Fetch location data (Geocoding API)
   const fetchLocation = useCallback(async (city: string) => {
-    setLocationLoading(true);
+    start();
     setError(null);
     
     try {
@@ -106,13 +127,18 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
         throw new Error("No location found");
       }
 
+      let latitude: string;
+      let longitude: string;
+
       if (Array.isArray(data)) {
-        setLatitude(data[0].lat);
-        setLongitude(data[0].lon);
+        latitude = data[0].lat;
+        longitude = data[0].lon;
       } else {
-        setLatitude(data.lat);
-        setLongitude(data.lon);
+        latitude = data.lat;
+        longitude = data.lon;
       }
+
+      handleFetchWeatherData(latitude, longitude);
     } catch (error) {
       console.error(error);
       if (error instanceof Error) {
@@ -121,88 +147,57 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
         setError("An unknown error occurred");
       }
     } finally {
-      setLocationLoading(false);
+      stop();
     }
   }, []);
 
-  const fetchLocationName = useCallback(async () => {
-    if (!latitude || !longitude) return;
-    setLocationNameLoading(true);
-    setError(null);
+  const handleGetCurrentLocation = useCallback(async () => {
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by your browser.");
+      return;
+    }
+
+    start();
+    setError("");
 
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/reverse?lat=${latitude}&lon=${longitude}&limit=5&&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
-      );
+      const position = await new Promise<GeolocationPosition>((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject);
+      });
 
-      if (!res.ok) throw new Error("Failed to fetch location name");
+      const latitude = position.coords.latitude.toString();
+      const longitude = position.coords.longitude.toString();
 
-      const data = await res.json();
-      setLocation(data[0]);
+      handleFetchWeatherData(latitude, longitude);
     } catch (error) {
-      console.error(error);
-      setError("Unable to fetch location name");
+      console.error("Error fetching location:", error);
+      setError("Unable to retrieve your location. Please enable location services in your browser.");
     } finally {
-      setLocationNameLoading(false);
+      stop();
     }
-  }, [latitude, longitude]);
-
-  useEffect(() => {
-    if (!!latitude && !!longitude) {
-      fetchWeather();
-      fetchAirQuality();
-      fetchLocationName();
-    }
-  }, [latitude, longitude]);
-
-  useEffect(() => {
-    if (weatherLoading || aqiLoading || locationLoading || locationNameLoading || currentLocationLoading) {
-      setLoading(true);
-    } else {
-      setLoading(false);
-    }
-  }, [weather, aqi, weatherLoading, aqiLoading, locationLoading, locationNameLoading]);
+  }, []);
 
   useEffect(() => {
     if (weather) {
       const bg = getBackgroundFromIcon(weather.current.weather[0].icon, weather.current.weather[0].id);
       onBackgroundChange(bg);
     }
-  }, [weather, latitude, longitude, onBackgroundChange]);
-
-  const handleGetCurrentLocation = useCallback(() => {
-    setCurrentLocationLoading(true);
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude.toString());
-          setLongitude(position.coords.longitude.toString());
-          setCurrentLocationLoading(false);
-        },
-        (error) => {
-          console.error("Error fetching location:", error);
-          setError("Unable to retrieve your location. Please enable location services in your browser.");
-          setCurrentLocationLoading(false);
-        }
-      );
-    } else {
-      setError("Geolocation is not supported by your browser.");
-      setCurrentLocationLoading(false);
-    }
-  }, []);
+  }, [weather, onBackgroundChange]);
 
   return (
     <div className="relative w-full lg:w-5/6 md:columns-2 flex justify-center p-4">
       {/* Search Bar */}
-      <div className="fixed top-0 w-full mx-auto flex justify-center p-4 z-10">
-        <SearchBar onSearch={fetchLocation} handleCurrentLocation={handleGetCurrentLocation} loading={loading} />
+      <div className="fixed top-0 w-full mx-auto flex justify-center p-4 z-20">
+        <SearchBar onSearch={fetchLocation} handleCurrentLocation={handleGetCurrentLocation} loading={isLoading} />
         <DarkModeToggle />
       </div>
 
       {/* Error Message */}
       {error && <p className="text-red-500 mt-16">{error}</p>}
 
-      {weather && aqi && location && !error && (
+      {isLoading && <LoadingSpinner />}
+
+      {weather && aqi && location && !error && !isLoading && (
         <div className="flex flex-wrap md:flex-nowrap justify-center md:justify-start w-full">
           <div className="flex justify-center w-full mt-10 md:fixed md:w-1/2 lg:w-2/5 h-auto lg:h-[60vh] md:p-4">
             <CurrentWeather weather={weather} location={location} />
