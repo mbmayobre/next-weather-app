@@ -32,8 +32,10 @@ export const Wind: FunctionComponent<WindProps> = ({ weather }) => {
       <img
         src="/icons/arrow.svg"
         alt="Wind Direction"
-        className="absolute z-[1] opacity-75 w-[125px] h-[125px] top-full bottom-full inset-x-auto self-center"
-        style={{ transform: `rotate(${weather.current.wind_deg + 180}deg)` }}
+        className="absolute z-[1] opacity-75 w-[125px] h-[125px] top-1/2 left-1/2"
+        style={{
+          transform: `translate(-50%, -50%) rotate(${weather.current.wind_deg + 180}deg)`,
+        }}
       />
     </div>
   );
