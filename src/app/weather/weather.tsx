@@ -1,6 +1,6 @@
 'use client'
 
-import { FunctionComponent, useEffect, useState, useCallback } from "react";
+import { FunctionComponent, useEffect, useState, useCallback, Dispatch, SetStateAction } from "react";
 import { weather, location, air_quality } from "../lib/definitions";
 import SearchBar from "../components/searchbar";
 import CurrentWeather from "../features/current-weather";
@@ -32,76 +32,70 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
   const [location, setLocation] = useState<location>();
   const [error, setError] = useState<string | null>(null);
 
-  // Fetch weather data
-  const fetchWeather = async (latitude: string, longitude: string) => {
-    if (!latitude || !longitude) return
+  // TODO(human): shared fetch helper to replace the near-duplicate blocks in
+  // fetchWeather, fetchAirQuality, and fetchLocationName below.
+  //
+  // Each of those three functions currently does the same thing: bail if lat/lon
+  // are missing, call start(), clear the error, fetch a URL, throw a specific
+  // error message on a bad response, hand the parsed JSON to a setter, catch and
+  // report a specific error message, then call stop().
+  //
+  // Implement a generic fetchJson<T> here that captures that shared shape, then
+  // rewrite fetchWeather/fetchAirQuality/fetchLocationName to call it. Decide:
+  // - signature: e.g. fetchJson<T>(url: string, errorMessage: string): Promise<T | undefined>
+  //   (start/stop/setError happen inside; caller still owns its own state setter)
+  // - what happens on failure: return undefined and let the caller skip setting
+  //   state, or throw and let each caller's own try/catch stay in place?
+  // - should start()/stop() live inside the helper, or stay in each caller so
+  //   Promise.all-style composition above isn't affected?
+
+  const fetchJson = async <T,>(url: string, errorMessage: string, setData: (data: T) => void): Promise<void> => {
+    if (!url) return
     start();
     setError(null);
     try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_WEATHER_API_URL}?lat=${latitude}&lon=${longitude}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&units=imperial`
-      );
-
-      if (!res.ok) throw new Error("Failed to fetch weather data");
-
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(errorMessage);
       const data = await res.json();
-      setWeather(data);
+      setData(data);
     } catch (error) {
       console.error(error);
-      setError("Unable to fetch weather data");
+      setError(errorMessage);
     } finally {
       stop();
     }
+  };
+
+  // Fetch weather data
+  const fetchWeather = async (latitude: string, longitude: string) => {
+    if (!latitude || !longitude) return
+    const url = `${process.env.NEXT_PUBLIC_WEATHER_API_URL}?lat=${latitude}&lon=${longitude}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&units=imperial`
+    const errorMessage = "Unable to fetch weather data";
+    return fetchJson(url, errorMessage, setWeather);
   };
 
   // Fetch air pollution data
   const fetchAirQuality = async (latitude: string, longitude: string) => {
     if (!latitude || !longitude) return
-    start();
-    setError(null);
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_AIR_POLLUTION_API_URL}?lat=${latitude}&lon=${longitude}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
-      );
-
-      if (!res.ok) throw new Error("Failed to fetch air quality data");
-
-      const data = await res.json();
-      setAqi(data);
-    } catch (error) {
-      console.error(error);
-      setError("Unable to fetch air quality data");
-    } finally {
-      stop();
-    }
+    const url = `${process.env.NEXT_PUBLIC_AIR_POLLUTION_API_URL}?lat=${latitude}&lon=${longitude}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+    const errorMessage = "Unable to fetch air quality data";
+    return fetchJson(url, errorMessage, setAqi);
   };
 
   // Fetch location name
   const fetchLocationName = async (latitude: string, longitude: string) => {
     if (!latitude || !longitude) return
-    start();
-    setError(null);
-    try {
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/reverse?lat=${latitude}&lon=${longitude}&limit=5&&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
-      );
-
-      if (!res.ok) throw new Error("Failed to fetch location name");
-
-      const data = await res.json();
-      setLocation(data[0]);
-    } catch (error) {
-      console.error(error);
-      setError("Unable to fetch location name");
-    } finally {
-      stop();
-    }
+    const url = `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/reverse?lat=${latitude}&lon=${longitude}&limit=5&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+    const errorMessage = "Unable to fetch location name";
+    return fetchJson(url, errorMessage, (data: location[]) => setLocation(data[0]));
   };
 
   const handleFetchWeatherData = (latitude: string, longitude: string) => {
-    fetchWeather(latitude, longitude);
-    fetchAirQuality(latitude, longitude);
-    fetchLocationName(latitude, longitude);
+    Promise.all([
+      fetchWeather(latitude, longitude),
+      fetchAirQuality(latitude, longitude),
+      fetchLocationName(latitude, longitude),
+    ]);
   };
 
   // Fetch location data (Geocoding API)

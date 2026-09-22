@@ -38,7 +38,7 @@ export function getPressureBackgroundFromValue(value: number): PressureBackgroun
 
 export function getIconFromCode(code: number): WeatherIcon {
   switch (true) {
-    case code === 200 && code < 210:
+    case code >= 200 && code < 210:
       return 'thunder-and-rain';
     case code === 210:
       return 'light-thunder';
