@@ -1,5 +1,16 @@
 'use client'
 
+/**
+ * Wind speed and direction, with an arrow that rotates to match.
+ *
+ * Two conversions worth knowing:
+ * - `wind_deg` is the direction the wind is coming FROM, in degrees clockwise
+ *   from north. Dividing by 45 and rounding maps it onto the 8-point compass
+ *   (the % 8 wraps 360 degrees back around to "North").
+ * - The arrow image points "up" by default, so it is rotated by deg + 180 to
+ *   show the direction the wind is blowing TOWARDS, which is what reads
+ *   naturally as an arrow.
+ */
 import { FunctionComponent } from "react";
 import { weather } from "../lib/definitions";
 import { FaWind } from "react-icons/fa6";

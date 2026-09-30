@@ -1,5 +1,13 @@
 'use client'
 
+/**
+ * UV index with a WHO-style risk band (low / moderate / high / very high /
+ * extreme) and matching artwork.
+ *
+ * The thresholds live in two places that must agree: uviLevel() below for the
+ * text, and getUVIndexBackgroundFromValue in service/image-requests.ts for the
+ * image. Change one, change the other.
+ */
 import { FunctionComponent, useState, useEffect } from "react";
 import { weather } from "../lib/definitions";
 import { PiSunBold } from "react-icons/pi";

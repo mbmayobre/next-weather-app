@@ -1,5 +1,16 @@
 'use client'
 
+/**
+ * Light/dark theme switch.
+ *
+ * Tailwind is configured with `darkMode: "class"` (tailwind.config.ts), so dark
+ * styles apply whenever the <html> element carries the `dark` class. This
+ * component is what adds and removes that class, and it mirrors the choice into
+ * localStorage so it survives a reload.
+ *
+ * The class has to be toggled on document.documentElement rather than through
+ * React state, because <html> is outside the React tree.
+ */
 import { FunctionComponent, useEffect, useState } from "react";
 import { MdDarkMode } from "react-icons/md";
 import { FaCircle } from "react-icons/fa";

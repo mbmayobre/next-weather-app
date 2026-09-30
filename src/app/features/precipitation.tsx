@@ -1,5 +1,15 @@
 'use client'
 
+/**
+ * Total rainfall forecast for today.
+ *
+ * Note that OpenWeatherMap reports rain in MILLIMETRES even when the request
+ * asks for imperial units (which only affects temperature and wind speed), so
+ * the value has to be converted here.
+ *
+ * `daily[0].rain` is missing entirely when no rain is forecast — it is not
+ * zero, it is undefined — hence the two guarded branches below.
+ */
 import { FunctionComponent } from "react";
 import { weather } from "../lib/definitions";
 import { GiHeavyRain } from "react-icons/gi";

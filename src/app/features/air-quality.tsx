@@ -1,5 +1,15 @@
 'use client'
 
+/**
+ * Air Quality Index from the Air Pollution API.
+ *
+ * This is the only card that takes `aqi` rather than `weather`, because it is
+ * fed by a different endpoint. OpenWeatherMap's AQI is a 1-5 scale (1 = good,
+ * 5 = very poor), NOT the US EPA 0-500 scale — a low number is good here.
+ *
+ * Like uv-index.tsx, the band thresholds are duplicated between aqiLevel()
+ * below and getAirQualityBackgroundFromValue in service/image-requests.ts.
+ */
 import { FunctionComponent, useState, useEffect } from "react";
 import { air_quality } from "../lib/definitions";
 import { PiWavesBold } from "react-icons/pi";

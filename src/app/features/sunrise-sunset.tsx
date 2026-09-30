@@ -1,5 +1,19 @@
 'use client'
 
+/**
+ * Sunrise and sunset times, with artwork showing roughly where the sun is.
+ *
+ * Two details:
+ * - Times are formatted with `timeZone: weather.timezone` so they show the
+ *   LOCAL time at the searched location. Searching Tokyo from Utah should show
+ *   Tokyo's sunrise, not that instant converted to Mountain Time.
+ * - getSunriseIconIndex returns 0-15 and splits the daylight span
+ *   proportionally, so the artwork is correct whether the day is 6 hours or 18.
+ *
+ * This card derives its value with useMemo during render instead of the
+ * useState + useEffect pattern the other cards use. It is the simpler approach
+ * for a value computed purely from props.
+ */
 import { FunctionComponent, useMemo } from "react";
 import { weather } from "../lib/definitions";
 import { PiSunHorizonBold } from "react-icons/pi";

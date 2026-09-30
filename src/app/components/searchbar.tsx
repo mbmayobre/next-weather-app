@@ -1,5 +1,15 @@
 'use client'
 
+/**
+ * Search input + submit button + "use my location" button.
+ *
+ * Presentational and controlled by its parent: it owns only the text being
+ * typed, and hands the finished query up through onSearch. It knows nothing
+ * about the weather APIs.
+ *
+ * Both buttons are disabled while `loading` is true so a user cannot queue up
+ * duplicate searches.
+ */
 import { FunctionComponent, useState } from "react";
 import { IoMdClose } from "react-icons/io";
 import { FiSearch } from "react-icons/fi";
@@ -15,6 +25,8 @@ export const SearchBar: FunctionComponent<SearchBarProps> = ({ onSearch, handleC
   const [city, setCity] = useState("");
 
   const handleSearch = (e: React.FormEvent) => {
+    // Without preventDefault the browser would do a full-page form submission
+    // and reload the app.
     e.preventDefault();
     if (city.trim() !== "") {
       onSearch(city);

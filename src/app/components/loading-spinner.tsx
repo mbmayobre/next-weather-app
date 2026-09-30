@@ -1,5 +1,10 @@
 'use client'
 
+/**
+ * Full-screen loading overlay, shown by weather.tsx while any request is in
+ * flight. `fixed inset-0` covers the viewport and the backdrop blur keeps the
+ * stale cards behind it from looking interactive.
+ */
 import { FunctionComponent } from "react"
 
 export const LoadingSpinner: FunctionComponent = () => {

@@ -1,5 +1,13 @@
 'use client'
 
+/**
+ * Barometric pressure, shown as a gauge.
+ *
+ * The API returns hPa (hectopascals) regardless of the units parameter; US
+ * forecasts use inches of mercury, so the value is multiplied by 0.02953.
+ * getPressureBackgroundFromValue then picks one of five gauge images from the
+ * converted inHg value.
+ */
 import { FunctionComponent, useState, useEffect } from "react";
 import { weather } from "../lib/definitions";
 import { MdCompress } from "react-icons/md";

@@ -1,9 +1,26 @@
+/**
+ * TypeScript shapes for the OpenWeatherMap responses. Names are lowercase and
+ * snake_case because they mirror the API's own fields.
+ *
+ * IMPORTANT: these are a promise, not a guarantee. The JSON is cast to these
+ * types in weather.tsx without being validated at runtime, so if the API
+ * changes a field, TypeScript stays happy and the app breaks in the browser. A
+ * schema validator (Zod or similar) in the Route Handlers would close that gap.
+ *
+ * Some fields are also optional in practice but typed as required — most
+ * notably `daily[].rain`, which is absent when no rain is forecast, and
+ * `alerts`, which is absent when there is nothing to report. Both call sites
+ * guard for that; watch for it when using other fields.
+ */
 export type local_names = {
   ascii: string;
   feature_name: string;
   [key: string]: string; // Allows any additional language codes
 };
 
+// A single place, as returned by /api/geocode. The route always hands back one
+// of these, whether the lookup was by zip, city name or coordinates.
+// `local_names` is only present on reverse and direct lookups, not zip.
 export type location = {
   name: string;
   local_names: local_names;
@@ -103,6 +120,9 @@ export type weather_alert = {
   tags: string[];
 };
 
+// The full One Call 3.0 payload — the object almost every feature card takes
+// as its `weather` prop. `timezone` is an IANA name (e.g. "America/Chicago")
+// for the searched location, used by sunrise-sunset.tsx.
 export type weather = {
   current: current_weather;
   daily: daily_weather[];
@@ -115,6 +135,8 @@ export type weather = {
   alerts: weather_alert[];
 };
 
+// Air Pollution API payload. `list[0].main.aqi` is a 1-5 index
+// (1 = good ... 5 = very poor), not the US EPA 0-500 scale.
 export type air_quality = {
   coord: [
     number,

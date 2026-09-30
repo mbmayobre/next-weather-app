@@ -1,5 +1,9 @@
 'use client'
 
+/**
+ * Visibility in miles. The API reports metres (capped at 10,000), so the value
+ * is divided by 1609.344.
+ */
 import { FunctionComponent } from "react";
 import { weather } from "../lib/definitions";
 import { MdOutlineVisibility } from "react-icons/md";
