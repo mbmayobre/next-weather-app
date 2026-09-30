@@ -1,5 +1,14 @@
 'use client'
 
+/**
+ * 7-day forecast strip. Index 0 is today, so it gets the label "Today" instead
+ * of a weekday name.
+ *
+ * Timestamps from the API are UNIX seconds, hence the * 1000 before passing
+ * them to `new Date()`, which expects milliseconds. These render in the
+ * viewer's local timezone (unlike sunrise-sunset.tsx, which deliberately uses
+ * the searched location's timezone).
+ */
 import { FunctionComponent } from "react";
 import { weather } from "../lib/definitions";
 import { MdOutlineCalendarToday } from "react-icons/md";

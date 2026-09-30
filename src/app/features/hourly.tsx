@@ -1,5 +1,13 @@
 'use client'
 
+/**
+ * Horizontally scrolling hourly forecast.
+ *
+ * One Call 3.0 returns 48 hourly entries; we show the next 25 (now + 24 hours).
+ * `pop` is "probability of precipitation" as a 0-1 fraction, so it is
+ * multiplied by 100 for display, and hidden (opacity-0 rather than unmounted,
+ * to keep the rows aligned) when it is zero.
+ */
 import { FunctionComponent } from "react";
 import { weather } from "../lib/definitions";
 import { TbClockHour4 } from "react-icons/tb";

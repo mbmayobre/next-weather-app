@@ -1,5 +1,13 @@
 'use client'
 
+/**
+ * The big card: place name, current temperature, description and today's
+ * high/low, plus a large condition icon.
+ *
+ * Like every component in features/, it is purely presentational — it receives
+ * already-fetched data from weather.tsx and renders it. The only logic is
+ * choosing which icon SVG to show.
+ */
 import { FunctionComponent, useEffect, useState } from "react";
 import { weather, location } from "../lib/definitions";
 import { getIconFromIcon } from "../service/image-requests";

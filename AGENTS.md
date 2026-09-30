@@ -11,6 +11,29 @@ stateful data-fetching hub; components under `src/app/features/` are dumb,
 prop-driven cards that derive their own display/background variant from the shared
 `weather`/`aqi` objects via helpers in `src/app/service/`.
 
+## Conventions
+
+### Keep documentation and comments current with every change
+
+Any code change must carry its documentation with it, in the same commit:
+
+- **`README.md`** — update it whenever behavior, structure, setup, scripts, env
+  vars, API routes or known gaps change. It is written for a developer seeing
+  the repo for the first time; keep the architecture section, the data-flow
+  diagram and the route table true.
+- **`.env.example`** — update it whenever an env var is added, renamed or
+  removed. Never put real secrets in it.
+- **Comments in the code** — every file opens with a block comment saying what
+  it is for and how it fits the whole. Keep it accurate when the file's job
+  changes, and comment any non-obvious decision inline: unit conversions, API
+  quirks, why a workaround exists. Explain *why*, not *what* the line does.
+- **This file and `AGENTS.md`** — they are identical except for the H1. Apply
+  every edit to both, and record finished work under Done and new findings
+  under Left to do.
+
+If a change makes an existing comment or doc wrong, fixing it is part of the
+change, not follow-up work.
+
 ## Status (2026-09-21)
 
 ### Done
@@ -41,11 +64,15 @@ prop-driven cards that derive their own display/background variant from the shar
   validates lat/lon (numeric, in range → else 400). `/api/geocode` always returns a
   single `location` object for `?q=<zip|city>` or `?lat&lon` (404 if no match).
   Pending: user will rotate the OpenWeatherMap key after deploying.
+- **Docs:** `README.md` rewritten from the create-next-app boilerplate into a
+  full guide (setup, env vars, data-flow diagram, directory map, a "Next.js
+  concepts used here" section, per-layer reference, common tasks, known gaps).
+  Added `.env.example` (with a `!.env.example` exception in `.gitignore`, since
+  `.env*` was ignoring it). Added file-header block comments to every file under
+  `src/` plus inline comments for the non-obvious parts (unit conversions, the
+  Tailwind dynamic-class trap, day/night icon selection, the loading counter).
 
 ### Left to do
-- **DX:** Add a `.env.example` documenting the four required env vars
-  (`WEATHER_API_KEY`, `WEATHER_API_URL`, `GEOCODING_API_URL`,
-  `AIR_POLLUTION_API_URL` — server-only, no `NEXT_PUBLIC_` prefix).
 - **Lint:** `npm run lint` is broken — it runs `next lint`, which Next 16 removed,
   and `npx eslint` also fails on the current `eslint.config.mjs`.
 - **Tests:** No test runner is installed. `service/dictionary.ts` and
@@ -53,5 +80,3 @@ prop-driven cards that derive their own display/background variant from the shar
   (threshold-to-band mappings, icon selection, sunrise-icon-index math) but
   currently untested.
 - **CI:** No `.github/workflows` — nothing runs lint/build/tests on PRs.
-- **Docs:** `README.md` is still the unedited `create-next-app` boilerplate; needs
-  a real project description and env var setup instructions.

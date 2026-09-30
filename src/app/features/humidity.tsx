@@ -1,5 +1,13 @@
 'use client'
 
+/**
+ * Relative humidity plus the dew point.
+ *
+ * The card's artwork changes with the value: getHumidityBackgroundFromValue
+ * buckets the percentage into one of five bands, and humidityClassMap turns
+ * that band into a literal Tailwind class (see service/dictionary.ts for why
+ * the map is needed).
+ */
 import { FunctionComponent, useState, useEffect } from "react";
 import { weather } from "../lib/definitions";
 import { GiWaterDrop } from "react-icons/gi";

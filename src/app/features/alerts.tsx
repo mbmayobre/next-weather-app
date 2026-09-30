@@ -1,5 +1,17 @@
 'use client'
 
+/**
+ * Government weather alerts (National Weather Service in the US), shown only
+ * when One Call returns an `alerts` array.
+ *
+ * Two pieces of local state: `expanded` clamps the panel to max-h-60 with a
+ * fade-out gradient until the user asks for more, and `visible` lets them
+ * dismiss it entirely for this session.
+ *
+ * `weather.alerts` is absent from the payload when there is nothing to report,
+ * which is why both this component and its call site in weather.tsx check for
+ * it before rendering.
+ */
 import { FunctionComponent, useState, useEffect } from "react";
 import { weather } from "../lib/definitions";
 

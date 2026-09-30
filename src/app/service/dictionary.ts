@@ -1,3 +1,26 @@
+/**
+ * Shared vocabulary for artwork: the set of valid names, and the literal
+ * Tailwind class for each one.
+ *
+ * WHY THE CLASS MAPS EXIST — the least obvious thing in this codebase.
+ *
+ * Tailwind does not parse your JavaScript. At build time it scans source files
+ * for strings that look like class names and generates CSS only for what it
+ * finds. So this silently produces no CSS at all:
+ *
+ *     <div className={`bg-${bg}`} />        // Tailwind never sees "bg-cloudy"
+ *
+ * Writing every class out in full below means the scanner finds them, while
+ * components stay dynamic by doing `className={bgClassMap[bg]}`.
+ *
+ * Consequence: these maps are NOT dead code even if an entry looks unused.
+ * Deleting one removes the generated CSS and the artwork silently disappears.
+ * sunrise-sunset.tsx depends on exactly this — it builds `bg-sunrise-${idx}`
+ * inline, and it only works because sunriseClassMap spells those names out.
+ *
+ * The union types serve a second purpose: they make a typo a compile error
+ * instead of a missing image at runtime.
+ */
 export type Background =
   | 'thunderstorm'
   | 'light-rain'

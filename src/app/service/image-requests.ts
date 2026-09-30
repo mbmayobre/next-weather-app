@@ -1,5 +1,27 @@
+/**
+ * Pure mapping functions: a weather code or a measurement goes in, the name of
+ * an icon or background comes out. No React, no I/O — which also makes this the
+ * easiest file in the project to unit test.
+ *
+ * OpenWeatherMap describes conditions two ways, and both are used here:
+ * - `id`   a numeric condition code, grouped in ranges: 2xx thunderstorm,
+ *          3xx drizzle, 5xx rain, 6xx snow, 7xx atmosphere (mist/fog/haze),
+ *          800 clear, 80x clouds. Full list:
+ *          https://openweathermap.org/weather-conditions
+ * - `icon` a short code such as "02d" / "02n", where the last character is d
+ *          for day or n for night.
+ *
+ * Every function uses the `switch (true)` idiom: each case is a boolean
+ * expression and the first true one wins. It reads like an if/else chain but
+ * keeps the range checks lined up.
+ *
+ * The returned strings are union types from dictionary.ts, so a name that does
+ * not exist will not compile.
+ */
 import { Background, WeatherIcon, PressureBackground, HumidityBackground, AirQualityBackground, UVIndexBackground } from './dictionary';
 
+// Full-page background from the condition code alone (no day/night variant).
+// Anything unmapped falls back to 'home', the neutral default background.
 export function getBackgroundFromCode(code: number): Background {
   switch (true) {
     case code >= 200 && code < 300:
@@ -36,6 +58,9 @@ export function getPressureBackgroundFromValue(value: number): PressureBackgroun
   }
 }
 
+// Card/forecast icon from the condition code. The thunderstorm range is
+// checked as 200-209 (not code === 200) so 201 and 202 - moderate and heavy
+// thunderstorms - do not fall through to the 'clear-day' default.
 export function getIconFromCode(code: number): WeatherIcon {
   switch (true) {
     case code >= 200 && code < 210:
@@ -136,6 +161,9 @@ export function getUVIndexBackgroundFromValue(value: number): UVIndexBackground 
   }
 }
 
+// Day/night-aware wrapper around getBackgroundFromCode. Only clear and partly
+// cloudy skies have separate night artwork; rain looks the same after dark, so
+// everything else defers to the code-only mapping.
 export function getBackgroundFromIcon(icon: string, code: number): Background {
   const isDay = icon.endsWith('d');
 
@@ -153,6 +181,8 @@ export function getBackgroundFromIcon(icon: string, code: number): Background {
   return getBackgroundFromCode(code);
 }
 
+// Day/night-aware wrapper around getIconFromCode. This is the one the feature
+// components call; prefer it over getIconFromCode so night icons are used.
 export function getIconFromIcon(icon: string, code: number): WeatherIcon {
   const isDay = icon.endsWith('d');
 
@@ -180,6 +210,11 @@ export function getIconFromIcon(icon: string, code: number): WeatherIcon {
  * @param sunrise  – API sunrise time, in UNIX seconds
  * @param sunset   – API sunset time, in UNIX seconds
  * @returns        – icon index 0…15
+ *
+ * Picks one of 16 sun-position images for the sunrise/sunset card. The daytime
+ * slots are allocated by PROPORTION of the day elapsed rather than by clock
+ * hours, so the artwork stays correct for a 6-hour winter day in Alaska and an
+ * 18-hour summer one alike.
  */
 export function getSunriseIconIndex(
   nowSec: number,
