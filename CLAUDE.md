@@ -3,8 +3,10 @@
 ## Project
 
 Next.js + Tailwind weather app. Live data comes from OpenWeatherMap (One Call 3.0,
-Air Pollution, and Geocoding APIs), fetched directly from the browser in
-`src/app/weather/weather.tsx` with no caching layer. `weather.tsx` is the single
+Air Pollution, and Geocoding APIs), proxied through Next.js Route Handlers in
+`src/app/api/{weather,air-quality,geocode}` (shared helpers in
+`src/app/lib/openweather.ts`) so the API key stays server-side. The browser calls
+those routes from `src/app/weather/weather.tsx`; there is no caching layer. `weather.tsx` is the single
 stateful data-fetching hub; components under `src/app/features/` are dumb,
 prop-driven cards that derive their own display/background variant from the shared
 `weather`/`aqi` objects via helpers in `src/app/service/`.
@@ -33,14 +35,19 @@ prop-driven cards that derive their own display/background variant from the shar
   function `return`s the `fetchJson(...)` call so `Promise.all` in
   `handleFetchWeatherData` actually waits on the real requests, not
   already-resolved promises. Committed as `2813a60`.
+- **Security:** OpenWeatherMap calls now go through Route Handlers
+  (`/api/weather`, `/api/air-quality`, `/api/geocode`); env vars dropped the
+  `NEXT_PUBLIC_` prefix so the key is no longer in the client bundle. The server
+  validates lat/lon (numeric, in range → else 400). `/api/geocode` always returns a
+  single `location` object for `?q=<zip|city>` or `?lat&lon` (404 if no match).
+  Pending: user will rotate the OpenWeatherMap key after deploying.
 
 ### Left to do
-- **Security:** API key is exposed client-side via `NEXT_PUBLIC_WEATHER_API_KEY`
-  and used directly in browser fetches. Proxy the three OpenWeatherMap calls
-  through Next.js Route Handlers so the key stays server-side.
 - **DX:** Add a `.env.example` documenting the four required env vars
-  (`NEXT_PUBLIC_WEATHER_API_KEY`, `NEXT_PUBLIC_WEATHER_API_URL`,
-  `NEXT_PUBLIC_GEOCODING_API_URL`, `NEXT_PUBLIC_AIR_POLLUTION_API_URL`).
+  (`WEATHER_API_KEY`, `WEATHER_API_URL`, `GEOCODING_API_URL`,
+  `AIR_POLLUTION_API_URL` — server-only, no `NEXT_PUBLIC_` prefix).
+- **Lint:** `npm run lint` is broken — it runs `next lint`, which Next 16 removed,
+  and `npx eslint` also fails on the current `eslint.config.mjs`.
 - **Tests:** No test runner is installed. `service/dictionary.ts` and
   `service/image-requests.ts` are pure and easily unit-testable
   (threshold-to-band mappings, icon selection, sunrise-icon-index math) but

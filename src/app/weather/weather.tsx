@@ -32,25 +32,9 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
   const [location, setLocation] = useState<location>();
   const [error, setError] = useState<string | null>(null);
 
-  // TODO(human): shared fetch helper to replace the near-duplicate blocks in
-  // fetchWeather, fetchAirQuality, and fetchLocationName below.
-  //
-  // Each of those three functions currently does the same thing: bail if lat/lon
-  // are missing, call start(), clear the error, fetch a URL, throw a specific
-  // error message on a bad response, hand the parsed JSON to a setter, catch and
-  // report a specific error message, then call stop().
-  //
-  // Implement a generic fetchJson<T> here that captures that shared shape, then
-  // rewrite fetchWeather/fetchAirQuality/fetchLocationName to call it. Decide:
-  // - signature: e.g. fetchJson<T>(url: string, errorMessage: string): Promise<T | undefined>
-  //   (start/stop/setError happen inside; caller still owns its own state setter)
-  // - what happens on failure: return undefined and let the caller skip setting
-  //   state, or throw and let each caller's own try/catch stay in place?
-  // - should start()/stop() live inside the helper, or stay in each caller so
-  //   Promise.all-style composition above isn't affected?
-
+  // All requests go through our own /api Route Handlers, which attach the
+  // OpenWeatherMap API key server-side.
   const fetchJson = async <T,>(url: string, errorMessage: string, setData: (data: T) => void): Promise<void> => {
-    if (!url) return
     start();
     setError(null);
     try {
@@ -69,7 +53,7 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
   // Fetch weather data
   const fetchWeather = async (latitude: string, longitude: string) => {
     if (!latitude || !longitude) return
-    const url = `${process.env.NEXT_PUBLIC_WEATHER_API_URL}?lat=${latitude}&lon=${longitude}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}&units=imperial`
+    const url = `/api/weather?lat=${latitude}&lon=${longitude}`
     const errorMessage = "Unable to fetch weather data";
     return fetchJson(url, errorMessage, setWeather);
   };
@@ -77,7 +61,7 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
   // Fetch air pollution data
   const fetchAirQuality = async (latitude: string, longitude: string) => {
     if (!latitude || !longitude) return
-    const url = `${process.env.NEXT_PUBLIC_AIR_POLLUTION_API_URL}?lat=${latitude}&lon=${longitude}&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+    const url = `/api/air-quality?lat=${latitude}&lon=${longitude}`
     const errorMessage = "Unable to fetch air quality data";
     return fetchJson(url, errorMessage, setAqi);
   };
@@ -85,9 +69,9 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
   // Fetch location name
   const fetchLocationName = async (latitude: string, longitude: string) => {
     if (!latitude || !longitude) return
-    const url = `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/reverse?lat=${latitude}&lon=${longitude}&limit=5&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
+    const url = `/api/geocode?lat=${latitude}&lon=${longitude}`
     const errorMessage = "Unable to fetch location name";
-    return fetchJson(url, errorMessage, (data: location[]) => setLocation(data[0]));
+    return fetchJson(url, errorMessage, setLocation);
   };
 
   const handleFetchWeatherData = (latitude: string, longitude: string) => {
@@ -104,35 +88,14 @@ export const Weather: FunctionComponent<WeatherProps> = ({ onBackgroundChange })
     setError(null);
     
     try {
-      const res = await fetch(
-        !isNaN(Number(city)) ? 
-        `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/zip?zip=${city},US&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
-        :
-        `${process.env.NEXT_PUBLIC_GEOCODING_API_URL}/direct?q=${city}&limit=1&appid=${process.env.NEXT_PUBLIC_WEATHER_API_KEY}`
-      );
+      const res = await fetch(`/api/geocode?q=${encodeURIComponent(city)}`);
+      const data: (location & { error?: string }) | null = await res.json().catch(() => null);
 
-      if (!res.ok) {
-        throw new Error("Failed to fetch location");
+      if (!res.ok || !data) {
+        throw new Error(data?.error ?? "Failed to fetch location");
       }
 
-      const data = await res.json();
-
-      if (!data || data.length === 0) {
-        throw new Error("No location found");
-      }
-
-      let latitude: string;
-      let longitude: string;
-
-      if (Array.isArray(data)) {
-        latitude = data[0].lat;
-        longitude = data[0].lon;
-      } else {
-        latitude = data.lat;
-        longitude = data.lon;
-      }
-
-      handleFetchWeatherData(latitude, longitude);
+      handleFetchWeatherData(String(data.lat), String(data.lon));
     } catch (error) {
       console.error(error);
       if (error instanceof Error) {
