@@ -1,5 +1,6 @@
 import { NextRequest } from "next/server";
 import { proxyCoordsRequest } from "../../lib/openweather";
+import { rateLimit } from "../../lib/rate-limit";
 
 /**
  * GET /api/weather?lat=..&lon=..
@@ -13,7 +14,13 @@ import { proxyCoordsRequest } from "../../lib/openweather";
  *
  * `units=imperial` gives Fahrenheit and mph — but NOT inches for rain or
  * pressure, which the feature cards convert themselves.
+ *
+ * Rate limited per IP (lib/rate-limit.ts), and upstream responses are cached
+ * for 10 minutes per rounded coordinate (lib/openweather.ts).
  */
 export async function GET(req: NextRequest) {
+  const limited = rateLimit(req);
+  if (limited) return limited;
+
   return proxyCoordsRequest(req.nextUrl.searchParams, process.env.WEATHER_API_URL, { units: "imperial" });
 }

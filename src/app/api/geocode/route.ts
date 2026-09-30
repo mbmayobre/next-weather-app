@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
-import { fetchOpenWeather, jsonError, parseCoords } from "../../lib/openweather";
+import { fetchOpenWeather, GEOCODE_CACHE_SECONDS, jsonError, parseCoords } from "../../lib/openweather";
+import { rateLimit } from "../../lib/rate-limit";
 
 /**
  * GET /api/geocode?q=<zip or city>  → forward lookup  (name -> coordinates)
@@ -17,8 +18,15 @@ import { fetchOpenWeather, jsonError, parseCoords } from "../../lib/openweather"
  * turn what the user typed into coordinates, and once (reverse) to get a
  * display name for the header, since One Call returns weather but no place
  * name.
+ *
+ * Results are cached for a day (GEOCODE_CACHE_SECONDS), since a city's
+ * coordinates don't change. A search with no match still comes back from
+ * /direct as a 200 with an empty array, so that "no match" is cached too.
  */
 export async function GET(req: NextRequest) {
+  const limited = rateLimit(req);
+  if (limited) return limited;
+
   const params = req.nextUrl.searchParams;
   const baseUrl = process.env.GEOCODING_API_URL;
   const q = params.get("q")?.trim();
@@ -41,7 +49,7 @@ export async function GET(req: NextRequest) {
   }
 
   try {
-    const res = await fetchOpenWeather(baseUrl && `${baseUrl}/${path}`, query);
+    const res = await fetchOpenWeather(baseUrl && `${baseUrl}/${path}`, query, GEOCODE_CACHE_SECONDS);
     if (res.status === 404) return jsonError("No location found", 404);
     if (!res.ok) return jsonError("Failed to fetch location", res.status);
 
