@@ -124,6 +124,12 @@ Three things are worth noticing in that diagram:
 - **Reverse geocoding is a separate call** because One Call 3.0 returns weather
   for coordinates but no place name. The app needs "Chicago, US" for the header.
 
+Not every one of those arrows reaches OpenWeatherMap. Each route is rate limited
+per IP first, and the server caches upstream responses (10 minutes for weather
+and air quality, a day for geocoding), so the second person to search Chicago
+is answered from the cache. See [Caching](#caching) and
+[Rate limiting](#rate-limiting).
+
 ---
 
 ## Project structure
@@ -157,7 +163,8 @@ src/app/
 │
 ├── lib/
 │   ├── definitions.ts     TypeScript shapes of the OpenWeatherMap responses
-│   └── openweather.ts     Server-only helpers: validation, key injection, proxying
+│   ├── openweather.ts     Server-only helpers: validation, key injection, caching, proxying
+│   └── rate-limit.ts      Server-only per-IP rate limiting for the /api routes
 │
 └── service/               Pure functions — no React, no I/O, easy to unit test
     ├── dictionary.ts        Union types + literal Tailwind class maps
@@ -259,6 +266,11 @@ until the user searches, and that search happens in the browser.
 The three API routes are **dynamic**: they read query parameters, so they must
 run per-request.
 
+Dynamic doesn't mean uncached, though. The route *handler* runs on every
+request, but the `fetch` it makes to OpenWeatherMap can still be served from
+Next's **Data Cache**, a server-side store keyed by URL. The two are separate
+layers. See [Caching](#caching).
+
 ### 5. Environment variables
 
 Covered above, and it's the security backbone of the app: `NEXT_PUBLIC_*` is
@@ -290,9 +302,9 @@ Three routes, all `GET`, all returning JSON.
 
 | Route | Query | Success | Errors |
 | --- | --- | --- | --- |
-| `/api/weather` | `lat`, `lon` | Raw One Call 3.0 payload (`units=imperial`) | 400 invalid coords; upstream status; 500 |
+| `/api/weather` | `lat`, `lon` | Raw One Call 3.0 payload (`units=imperial`) | 400 invalid coords; 429 rate limited; upstream status; 500 |
 | `/api/air-quality` | `lat`, `lon` | Raw Air Pollution payload | same |
-| `/api/geocode` | `q` **or** `lat`+`lon` | **One** `location` object | 400 bad input; 404 no match; 500 |
+| `/api/geocode` | `q` **or** `lat`+`lon` | **One** `location` object | 400 bad input; 404 no match; 429 rate limited; 500 |
 
 Every error response has the same shape, so the client can always read
 `data.error`:
@@ -307,13 +319,69 @@ Every error response has the same shape, so the client can always read
   `lat` and `lon` are present, numeric (`Number.isFinite`, which rejects `"abc"`
   and `Infinity`), and physically possible (|lat| ≤ 90, |lon| ≤ 180). This
   matters for more than tidiness: without it, any junk query string would cost a
-  billed OpenWeatherMap call.
-- **`fetchOpenWeather(baseUrl, params)`** — the only place the API key is read.
-  It builds the query with `URLSearchParams`, which percent-encodes every value,
-  so a city named `Salt Lake City & more` can't break the URL.
-- **`proxyCoordsRequest(...)`** — the entire body of the weather and air-quality
-  routes: validate, call upstream, forward the JSON or an error. Those two route
-  files are three lines each because of it.
+  billed OpenWeatherMap call. It also **rounds to 2 decimals** (about 1.1 km) so
+  nearby requests share a cache entry. See [Caching](#caching).
+- **`fetchOpenWeather(baseUrl, params, revalidateSeconds)`** — the only place
+  the API key is read. It builds the query with `URLSearchParams`, which
+  percent-encodes every value, so a city named `Salt Lake City & more` can't
+  break the URL, and it passes `next: { revalidate }` so the response is cached.
+- **`proxyCoordsRequest(...)`** — the body of the weather and air-quality
+  routes after the rate-limit check: validate, call upstream (cached), forward
+  the JSON or an error.
+
+### Caching
+
+Every upstream call is cached in Next's server-side Data Cache via
+`fetch(url, { next: { revalidate } })`. The cache is shared by **every
+visitor**, which is the point: 500 people searching Chicago cost one
+OpenWeatherMap call per cache lifetime, not 500.
+
+| Data | Lifetime | Constant |
+| --- | --- | --- |
+| Weather, air quality | 10 minutes | `WEATHER_CACHE_SECONDS` |
+| Geocoding (both directions) | 1 day | `GEOCODE_CACHE_SECONDS` |
+
+Things worth knowing:
+
+- **Coordinates are rounded before they reach the cache key.** The key is the
+  full upstream URL, and browser geolocation reports about 6 decimals, so
+  without rounding almost every "use my location" request would be a cache
+  miss.
+- **Only 200 responses are cached.** An upstream 401 or 429 is never stored.
+  A city search with no match *is* cached, because OpenWeatherMap's `/direct`
+  endpoint answers it with 200 and an empty array.
+- **In `npm run dev`, DevTools "Disable cache" (or a hard refresh) bypasses
+  it.** The browser then sends `cache-control: no-cache`, which Next honours in
+  development. Leave that setting off when checking whether caching works.
+- In Next 15 and later, `fetch` in a Route Handler is **not** cached unless you
+  opt in, which is why the option is set explicitly.
+
+### Rate limiting
+
+`lib/rate-limit.ts` exports `rateLimit(req)`, which every route calls as its
+first line:
+
+```ts
+const limited = rateLimit(req);
+if (limited) return limited;   // 429 { error } with a Retry-After header
+```
+
+The limit is **60 requests per minute per IP**. A search costs 4 API calls, so
+that's about 15 searches a minute: plenty for a person, not much for a script.
+It runs *before* the cache, so it also stops someone flooding the server with
+cache hits.
+
+It is deliberately simple, and has two limitations:
+
+- **The counters are in memory.** They reset when the server restarts, and on
+  serverless hosts each instance counts separately. It stops casual abuse; it
+  isn't a hard guarantee.
+- **The IP comes from `x-forwarded-for`.** That's reliable behind a host that
+  overwrites the header (Vercel does), but a client can forge it when nothing
+  in front of the app rewrites it.
+
+For production, also enable your host's firewall rate limiting (see
+[Deploying](#deploying)).
 
 ### Why `/api/geocode` normalizes its response
 
@@ -540,8 +608,10 @@ verify at runtime:
 ### Add a new upstream API call
 
 1. Add the base URL to `.env.local` **and** `.env.example` (no `NEXT_PUBLIC_`).
-2. Create `app/api/<name>/route.ts`. If it's a lat/lon endpoint, the whole body
-   can be one `proxyCoordsRequest(...)` call.
+2. Create `app/api/<name>/route.ts`. Start it with the `rateLimit(req)` check.
+   If it's a lat/lon endpoint, the rest of the body can be one
+   `proxyCoordsRequest(...)` call; otherwise, pass a cache lifetime as the third
+   argument to `fetchOpenWeather`.
 3. Add state and a `fetchJson` wrapper in `weather.tsx`, and include it in the
    `Promise.all`.
 4. Add the response type to `lib/definitions.ts`.
@@ -565,11 +635,14 @@ Honest list of what isn't done, so nobody assumes otherwise:
 - **No tests and no test runner.** `service/dictionary.ts` and
   `service/image-requests.ts` are pure and would be straightforward to cover.
 - **No CI.** Nothing runs build or lint on a PR.
-- **No caching.** Every search hits OpenWeatherMap. Adding
-  `next: { revalidate: 600 }` to the upstream `fetch` in `lib/openweather.ts`
-  would let repeat searches for the same coordinates share a response.
-- **No rate limiting.** The API key is safe now, but `/api/*` is open to anyone
-  who finds the deployed URL, and each call costs quota.
+- **Rate limiting is per server instance.** The in-memory counters in
+  `lib/rate-limit.ts` don't share state across serverless instances and reset on
+  restart. Moving them to a shared store (e.g. Redis) or relying on the host's
+  firewall would make the limit exact.
+- **The client shows a generic message on a 429 from the data routes.**
+  `fetchJson` in `weather.tsx` reports "Unable to fetch weather data" rather
+  than the server's "Too many requests" text. The search route (`fetchLocation`)
+  already shows the server's message.
 - **No runtime validation of upstream responses** (see [Types](#types-libdefinitionsts)).
 
 ---
@@ -577,11 +650,14 @@ Honest list of what isn't done, so nobody assumes otherwise:
 ## Deploying
 
 Any host that runs a Node.js server works; Vercel is the path of least
-resistance. Two things matter:
+resistance. Three things matter:
 
 1. **Set all four environment variables in the host's dashboard**, using the
    non-prefixed names. If the host still has the old `NEXT_PUBLIC_*` names, every
    `/api` route will return 500 because `WEATHER_API_KEY` will be undefined.
-2. **This app cannot be exported as a purely static site.** `next export` /
+2. **Turn on the host's rate limiting for `/api/*`** if it has one (e.g. Vercel
+   Firewall). The built-in limiter is per instance; see
+   [Rate limiting](#rate-limiting).
+3. **This app cannot be exported as a purely static site.** `next export` /
    `output: 'export'` would drop the Route Handlers, and the API key would have
    nowhere to live.
