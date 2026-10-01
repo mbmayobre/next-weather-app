@@ -39,11 +39,34 @@ type RateLimitResult = { allowed: boolean; retryAfterSec: number };
  * Records one request from `key` at time `now` (ms) and decides whether to
  * allow it. `retryAfterSec` is only meaningful when `allowed` is false; it
  * becomes the Retry-After header so a well-behaved client knows when to retry.
+ *
+ * Fixed window: a client's first request opens a WINDOW_MS window, and up to
+ * MAX_REQUESTS are allowed before it closes. The known trade-off is a burst at
+ * the boundary (60 requests at 0:59, 60 more at 1:01). A sliding log would
+ * prevent that but store a timestamp per request; for a best-effort limiter
+ * guarding a cache, one counter per client is the better deal.
+ *
+ * Rejected requests are not counted, so `count` means "requests allowed this
+ * window", and a client that keeps retrying is unblocked when the window ends
+ * rather than pushed further out.
  */
 function consume(key: string, now: number): RateLimitResult {
-  // TODO(human): implement the rate-limit decision using `buckets`,
-  // WINDOW_MS and MAX_REQUESTS. Placeholder: allow everything.
-  return { allowed: true, retryAfterSec: 0 };
+  const bucket = buckets.get(key);
+
+  if (!bucket || bucket.resetAt <= now) {
+    buckets.set(key, { count: 1, resetAt: now + WINDOW_MS });
+    return { allowed: true, retryAfterSec: 0 };
+  }
+
+  if (bucket.count < MAX_REQUESTS) {
+    bucket.count++;
+    return { allowed: true, retryAfterSec: 0 };
+  }
+
+  // Retry-After must be whole seconds. Rounding up (and never below 1) means
+  // a client that waits exactly this long will find the window closed.
+  const retryAfterSec = Math.max(1, Math.ceil((bucket.resetAt - now) / 1000));
+  return { allowed: false, retryAfterSec };
 }
 
 /**
